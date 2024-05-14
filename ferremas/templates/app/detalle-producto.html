@@ -1,0 +1,42 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+<title>Detalle Producto</title>
+{% endblock %}
+
+{% block contenido %}
+<!-- PRODUCTO-->
+<section class="container">
+  <div class="row mt-5">
+    <div class="col-lg-5 col-md-12 col-12">
+      {% if producto.imagen_url %}
+      <img src="{{ producto.imagen_url }}" class="img-fluid w-100 pb-1" alt="">
+      {% endif %}
+    </div>
+    <div class="col-lg-6 col-md-12 col-12">
+      <h6>Marca / {{ producto.marca_nombre | title }}</h6>
+      <h2 class="py-4">{{ producto.nombre | title }}</h2>
+      <h3>${{ producto.precio }}</h3>
+      <input type="number" value="1">
+      <button class="btn btn-white shadow-sm rounded-pill">
+        <i class="bi bi-cart"></i>
+      </button>
+    </div>
+  </div>
+<br>
+<hr>
+  <div class="accordion bg-body-tertiary" id="accordionFlushExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          <strong>Descripción</strong>
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">{{ producto.descripcion }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
