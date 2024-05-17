@@ -11,8 +11,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- bootstrap 5.3.0 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- bootstrap icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
   <!-- css -->
@@ -47,12 +47,29 @@
         </button>
       </form>
 
+      {% if user.is_authenticated %}
+      <div class="dropdown">
+        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ user.username }} <i class="bi bi-person-check-fill"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="{% url 'logout' %}">Salir</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+      </div>
+      {% else %}
+
       <!-- iniciar sesion -->
-      <button class="btn btn-light">
+      <a href="{% url 'login' %}" class="btn btn-light">
         <i class="bi bi-person"></i>
         ¡Hola! Inicia Sesión
-      </button>
-    
+      </a>
+
+      {% endif %}
+
+
+
       <!-- carro -->
       <button class="btn btn-light">
         <i class="bi bi-cart"></i>
@@ -113,102 +130,107 @@
 
   {% endblock %}
 
-      <!-- Suscripcion -->
-      <section id="sec1">
-        <div class="p-3 justify-content-center mt-5" style="height: 13rem; background-color: rgb(253, 193, 193);">
-            <div class="justify-content-center text-lg-center">
-                <h5 class="mt-3 fw-bold">Suscríbete a nuestra página</h5>
-                <p>¡Recibirás novedades y ofertas para ti!</p>
-            </div>
-            <form>
-                <div class="w-auto d-flex justify-content-center gap-1">
-                    <input for="correo" class="form-control bg-light p-2 rounded-4" style="width: 30rem;" type="text"
-                        id="correoE" placeholder="  Ingresa tu dirección de correo electrónico" />
-                    <button type="button" class="btn btn-danger d-flex rounded-4" id="btnSuscripcion"
-                        value="Validar correo">Registrarme</button>
-                </div>
-            </form>
+  <!-- Suscripcion -->
+  <section id="sec1">
+    <div class="p-3 justify-content-center mt-5" style="height: 13rem; background-color: rgb(253, 193, 193);">
+      <div class="justify-content-center text-lg-center">
+        <h5 class="mt-3 fw-bold">Suscríbete a nuestra página</h5>
+        <p>¡Recibirás novedades y ofertas para ti!</p>
+      </div>
+      <form>
+        <div class="w-auto d-flex justify-content-center gap-1">
+          <input for="correo" class="form-control bg-light p-2 rounded-4" style="width: 30rem;" type="text" id="correoE"
+            placeholder="  Ingresa tu dirección de correo electrónico" />
+          <button type="button" class="btn btn-danger d-flex rounded-4" id="btnSuscripcion"
+            value="Validar correo">Registrarme</button>
         </div>
-    </section>
+      </form>
+    </div>
+  </section>
 
-    <!-- Pie de pagina -->
-    <footer class="text-center text-light pb-5 pt-4"
-        style="background-color: #afcec6; border-top: 1px solid rgb(189, 189, 189);" id="sec2">
-        <div class="container pt-0">
-            <div class="row justify-content-center mt-3 pt d-flex">
-                <div class="col-12 col-md-auto">
-                    <img class="mb-0" src="{% static 'app/img/ferremas_logo.png' %}" alt="" width="150px">
-                    <div class="row justify-content-center mt-1">
-                        <div class="col-12">
-                            <ul class="list-unstyled d-flex justify-content-center">
-                                <li class="me-3"><a href="#" class="social-icon"><i
-                                            class="fab fa-facebook-f text-secondary link-dark"></i></a></li>
-                                <li class="me-3"><a href="#" class="social-icon"><i
-                                            class="fab fa-twitter text-secondary link-dark"></i></a></li>
-                                <li class="me-3"><a href="#" class="social-icon"><i
-                                            class="fab fa-instagram text-secondary link-dark"></i></a></li>
-                                <li class="me-3"><a href="#" class="social-icon"><i
-                                            class="fab fa-linkedin text-secondary link-dark"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-md text-start">
-                    <h5 class="text-black-50">Contáctanos</h5>
-                    <ul class="list-unstyled text-small align-items-center ulp ul-horizontal">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Mesa de ayuda</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Tel: +569 1234 5678</a>
-                        </li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">correo:
-                                ferremas@contacto.cl</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md text-start">
-                    <h5 class="text-black-50">Ayuda</h5>
-                    <ul class="list-unstyled text-small ulp ul-horizontal">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Servicio al cliente</a>
-                        </li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Preguntas
-                                frecuentes</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cambios y
-                                devoluciones</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Términos y
-                                condiciones</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-md text-start">
-                    <h5 class="text-black-50">Sobre nosotros</h5>
-                    <ul class="list-unstyled text-small ulp ul-horizontal">
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Quienes somos</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">contacto</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Nuestras Tiendas</a>
-                        </li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Trabaja con
-                                nosotros</a></li>
-                        <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Ventas al por mayor</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-auto">
-                    <img class="mb-2" src="{% static 'app/img/Webpay.webp' %}" alt="" width="200px">
-                </div>
+  <!-- Pie de pagina -->
+  <footer class="text-center text-light pb-5 pt-4"
+    style="background-color: #afcec6; border-top: 1px solid rgb(189, 189, 189);" id="sec2">
+    <div class="container pt-0">
+      <div class="row justify-content-center mt-3 pt d-flex">
+        <div class="col-12 col-md-auto">
+          <img class="mb-0" src="{% static 'app/img/ferremas_logo.png' %}" alt="" width="150px">
+          <div class="row justify-content-center mt-1">
+            <div class="col-12">
+              <ul class="list-unstyled d-flex justify-content-center">
+                <li class="me-3"><a href="#" class="social-icon"><i
+                      class="fab fa-facebook-f text-secondary link-dark"></i></a></li>
+                <li class="me-3"><a href="#" class="social-icon"><i
+                      class="fab fa-twitter text-secondary link-dark"></i></a></li>
+                <li class="me-3"><a href="#" class="social-icon"><i
+                      class="fab fa-instagram text-secondary link-dark"></i></a></li>
+                <li class="me-3"><a href="#" class="social-icon"><i
+                      class="fab fa-linkedin text-secondary link-dark"></i></a></li>
+              </ul>
             </div>
+          </div>
         </div>
-        <hr class="text-black-50 border-1">
-        <div class="text-center text-black-50 pt-0" style="background-color: #afcec6;">
-            © 2024 FerreMas. Todos los derechos reservados.
+        <div class="col-6 col-md text-start">
+          <h5 class="text-black-50">Contáctanos</h5>
+          <ul class="list-unstyled text-small align-items-center ulp ul-horizontal">
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Mesa de ayuda</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Tel: +569 1234 5678</a>
+            </li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">correo:
+                ferremas@contacto.cl</a></li>
+          </ul>
         </div>
-    </footer>
-    <script src="Val&Fun.js"></script>
+        <div class="col-6 col-md text-start">
+          <h5 class="text-black-50">Ayuda</h5>
+          <ul class="list-unstyled text-small ulp ul-horizontal">
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Servicio al cliente</a>
+            </li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Preguntas
+                frecuentes</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Cambios y
+                devoluciones</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Términos y
+                condiciones</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-md text-start">
+          <h5 class="text-black-50">Sobre nosotros</h5>
+          <ul class="list-unstyled text-small ulp ul-horizontal">
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Quienes somos</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">contacto</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Nuestras Tiendas</a>
+            </li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Trabaja con
+                nosotros</a></li>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Ventas al por mayor</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col-12 col-md-auto">
+          <img class="mb-2" src="{% static 'app/img/Webpay.webp' %}" alt="" width="200px">
+        </div>
+      </div>
+    </div>
+    <hr class="text-black-50 border-1">
+    <div class="text-center text-black-50 pt-0" style="background-color: #afcec6;">
+      © 2024 FerreMas. Todos los derechos reservados.
+    </div>
+  </footer>
+  <script src="Val&Fun.js"></script>
 
 
   <!-- scripts de bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js"
-    integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i"
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
     crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script> -->
+
 
 </body>
 

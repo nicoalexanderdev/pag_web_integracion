@@ -68,6 +68,9 @@ TEMPLATES = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
 WSGI_APPLICATION = 'djangoconfig.wsgi.application'
 
 
@@ -76,8 +79,12 @@ WSGI_APPLICATION = 'djangoconfig.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dbintegracion',
+        'USER': 'user',
+        'PASSWORD': 'zorUOpbvfwpfBRNFSTo1Os7AYZzxK8RL',
+        'HOST': 'dpg-cov4i7021fec73fdt5fg-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
