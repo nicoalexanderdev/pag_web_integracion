@@ -19,7 +19,9 @@
       <h3>${{ producto.precio }}</h3>
       <input type="number" value="1">
       <button class="btn btn-white shadow-sm rounded-pill">
-        <i class="bi bi-cart"></i>
+        <a href="{% url 'agregar-carrito' producto.id %}" style="text-decoration: none; color: black;">
+          Agregar al carro
+        </a>
       </button>
     </div>
   </div>
