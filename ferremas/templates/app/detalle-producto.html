@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
 <title>Detalle Producto</title>
 {% endblock %}
@@ -8,29 +9,34 @@
 <!-- PRODUCTO-->
 <section class="container">
   <div class="row mt-5">
-    <div class="col-lg-5 col-md-12 col-12">
+    <div class="col-12 col-md-6">
       {% if producto.imagen_url %}
       <img src="{{ producto.imagen_url }}" class="img-fluid w-100 pb-1" alt="">
       {% endif %}
     </div>
-    <div class="col-lg-6 col-md-12 col-12">
+    <div class="col-12 col-md-6">
       <h6>Marca / {{ producto.marca_nombre | title }}</h6>
       <h2 class="py-4">{{ producto.nombre | title }}</h2>
-      <h3>${{ producto.precio }}</h3>
+      <h3>${{ producto.precio | intcomma }}</h3>
       <input type="number" value="1">
-      <button class="btn btn-white shadow-sm rounded-pill">
-        <a href="{% url 'agregar-carrito' producto.id %}" style="text-decoration: none; color: black;">
+      <hr>
+      <div class="d-grid mt-3">
+        <a href="{% url 'agregar-carrito' producto.id %}"  class="btn btn-success">
           Agregar al carro
+          <i class="bi bi-cart"></i>
         </a>
-      </button>
+      </div>
+
+
     </div>
   </div>
-<br>
-<hr>
+  <br>
+  <hr>
   <div class="accordion bg-body-tertiary" id="accordionFlushExample">
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+          data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
           <strong>Descripción</strong>
         </button>
       </h2>
