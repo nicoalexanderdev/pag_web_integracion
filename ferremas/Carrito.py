@@ -3,6 +3,7 @@ class Carrito:
     def __init__(self, request):
         self.request = request
         self.session = request.session
+        self.user = request.user if request.user.is_authenticated else None
         carrito = self.session.get('carrito')
 
         if not carrito:

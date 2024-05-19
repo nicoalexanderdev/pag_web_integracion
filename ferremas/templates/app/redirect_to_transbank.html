@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+<title>Redirigiendo a Transbank</title>
+{% endblock %}
+
+{% block contenido %}
+
+    <form id="transbankForm" action="{{ url }}" method="POST">
+
+      {% csrf_token %}
+        <input type="hidden" name="token_ws" value="{{ token }}">
+        
+    </form>
+    <script type="text/javascript">
+        document.getElementById('transbankForm').submit();
+    </script>
+
+{% endblock %}

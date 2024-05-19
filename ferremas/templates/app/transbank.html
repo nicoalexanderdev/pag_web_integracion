@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+<title>Pagar</title>
+{% endblock %}
+
+
+{% block contant %}
+<div class="container">
+  <div id="voucher" class="m-5">
+    {{ data.resultado }}
+    {{ data.codigo }}
+    {{ data.monto }}
+  </div>
+</div>
+{% endblock %}
+
