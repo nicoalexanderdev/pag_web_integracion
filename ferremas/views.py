@@ -1,6 +1,6 @@
 import json
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from ferremas.Carrito import Carrito
 import requests
@@ -47,6 +47,53 @@ def checkout(request):
     context = {}
     return render(request, 'app/checkout.html')
 
+
+def categoria(request, id):
+    try:
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}')
+        response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
+        productos = response.json()
+
+        # Verificar que la respuesta contiene los datos esperados
+        if 'categoria' in productos and 'productos' in productos:
+            data = {
+                'categoria': productos['categoria'],
+                'productos': productos['productos']
+            }
+            return render(request, 'app/categoria.html', data)
+        else:
+            # Manejo de caso en el que los datos esperados no están presentes
+            return redirect('home')
+    except requests.RequestException as e:
+        # Registrar el error, puedes usar logging en lugar de print
+        print(f"Error al obtener productos de la API: {e}")
+        return redirect('home')
+
+
+
+def marca(request, id):
+    try:
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-productos-marca/{id}')
+        response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
+        productos = response.json()
+
+        # Verificar que la respuesta contiene los datos esperados
+        if 'marca' in productos and 'productos' in productos:
+            data = {
+                'marca': productos['marca'],
+                'productos': productos['productos']
+            }
+            return render(request, 'app/marca.html', data)
+        else:
+            # Manejo de caso en el que los datos esperados no están presentes
+            return redirect('home')
+    except requests.RequestException as e:
+        # Registrar el error, puedes usar logging en lugar de print
+        print(f"Error al obtener productos de la API: {e}")
+        return redirect('home')
+
+
+       
 
 # crud carrito
 

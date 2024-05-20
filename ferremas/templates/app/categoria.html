@@ -1,0 +1,39 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+<title>Categoria</title>
+{% endblock %}
+
+{% block contenido %}
+
+<br><br>
+
+<div class="container">
+  <div class="row">
+    <h3>Categoria: {{ categoria }}</h3>
+    {% for p in productos %}
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card mb-3">
+        <a href="{% url 'detalle_producto' p.id %}">
+          <img src="{{ p.imagen_url }}" class="card-img-top img-fluid" alt="imagen producto">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">{{ p.nombre }}</h5>
+          <h6>{{ p.marca_nombre }}</h6>
+        </div>
+
+      </div>
+    </div>
+    {% if forloop.counter|divisibleby:4 %}
+  </div>
+  <div class="row">
+    {% endif %}
+    <br>
+    {% endfor %}
+  </div>
+</div>
+
+
+
+{% endblock %}

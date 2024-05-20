@@ -64,7 +64,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ferremas.context_processor.total_carrito'
+                'ferremas.context_processor.total_carrito',
+                'ferremas.context_processor.categorias_processor',
+                'ferremas.context_processor.marcas_processor',
             ],
         },
     },
