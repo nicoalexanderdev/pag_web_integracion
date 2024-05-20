@@ -1,16 +1,32 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block title %}
 <title>Pagar</title>
 {% endblock %}
 
 
-{% block contant %}
+{% block contenido %}
 <div class="container">
-  <div id="voucher" class="m-5">
-    {{ data.resultado }}
-    {{ data.codigo }}
-    {{ data.monto }}
+  <br><br><br>
+  <div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+      <ul class="list-group">
+        <li class="list-group-item">  
+          <h1>Resultado de la Transacción</h1>
+        </li>
+        <li class="list-group-item">
+          <p><strong>Estado de la Transacción:</strong> {{ resultado }}</p>
+        </li>
+        <li class="list-group-item">
+          <p><strong>Código de Autorización:</strong> {{ codigo }}</p>
+        </li>
+        <li class="list-group-item">
+          <p><strong>Monto:</strong> ${{ monto | intcomma }}</p>
+        </li>
+      </ul>
+
+    </div>
   </div>
 </div>
 {% endblock %}

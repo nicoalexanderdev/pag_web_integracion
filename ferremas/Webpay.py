@@ -64,25 +64,18 @@ def transbank_create(request):
         return JsonResponse({'error': 'Error al crear la transacción'}, status=response.status_code)
 
 
-def transaction_commit(request, tokenws):
+
+def transaction_commit(tokenws):
     try:
-        csrf_token = get_token(request)
-        # Formar la URL para confirmar la transacción en Transbank
+        # Realizar la solicitud a la API de Transbank para confirmar la transacción
         url = f"http://{settings.API_BASE_TRANSBANK_URL}/commit/{tokenws}"
-
-        # Cabeceras necesarias para la solicitud
-        headers = {
-            'X-CSRFToken': csrf_token,  # Incluir el token CSRF en las cabeceras
-            'Content-Type': 'application/json'
-        }
-
-        # Realizar la solicitud PUT a la API de Transbank
+        headers = headers_request_transbank()
         response = requests.put(url, headers=headers)
-
-        # Devolver la respuesta de la API de Transbank
-        return response.json()
-
+        
+        if response.status_code == 200:
+            return response.json()
+        else:
+            return {'error': 'Error al confirmar la transacción'}
     except Exception as e:
-        # Manejar cualquier excepción que pueda ocurrir durante la solicitud a la API de Transbank
         print(f"Error al confirmar transacción en Transbank: {e}")
         return {'error': str(e)}

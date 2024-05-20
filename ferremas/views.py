@@ -7,6 +7,7 @@ import requests
 from django.conf import settings
 from ferremas.Webpay import transbank_create, transaction_commit
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -96,38 +97,107 @@ def limpiar_carrito(request):
     return render(request, 'app/checkout.html')
 
 
+
+# Transbank views
+
+
+@csrf_exempt
 def transbank(request):
-    # Captura los parámetros proporcionados por Webpay
-    resultado_transaccion = request.GET.get('status')
-    codigo_autorizacion = request.GET.get('buy_order')
-    monto_pagado = request.GET.get('amount')
 
-    # guardaremos en la base de datos
+    # Capturar el token proporcionado por Webpay en la URL de retorno
+    tokenws = request.GET.get('token_ws')
 
-    data = {
-        "resultado": resultado_transaccion,
-        "codigo": codigo_autorizacion,
-        "monto": monto_pagado
+    # levantamos error en caso que no se encuentra el token proporcionado
+    if not tokenws:
+        return JsonResponse({'error': 'No se proporciono token_ws'}, status=400)
+
+    # Realizar la solicitud de commit de la transacción
+    response_data = transaction_commit(tokenws)
+
+    # control de error en la solicitud de commit de la transacción
+    if 'error' in response_data:
+        return JsonResponse(response_data, status=500)
+    
+    # diccionario de mapeo de status de error
+    status_mapping = {
+        'FAILED': 'Transacción cancelada o rechazada',
+        'REJECTED': 'Transacción cancelada o rechazada',
+        'CANCELLED': 'Transacción cancelada o rechazada',
     }
 
+    # obtenemos las respuestas desde reponse_data
+    status = response_data.get('status')
+    authorization_code = response_data.get('authorization_code')
+    amount = response_data.get('amount')
+    buy_order = response_data.get('buy_order')
+    session_id = response_data.get('session_id')
+    card_number = response_data.get('card_detail', {}).get('card_number')
+    accounting_date = response_data.get('accounting_date')
+    transaction_date = response_data.get('transaction_date')
+    payment_type_code = response_data.get('payment_type_code')
+    response_code = response_data.get('response_code')
+    installments_number = response_data.get('installments_number')
+    user = request.user.id
+
+    # creamos diccionario para guardar los datos de la transaccion en la base de datos
+    data_db = {
+        "user": user,
+        "buy_order": buy_order,
+        "session_id": session_id,
+        "amount": amount,
+        "status": status,
+        "card_number": card_number,
+        "accounting_date": accounting_date,
+        "transaction_date": transaction_date,
+        "authorization_code": authorization_code,
+        "payment_type_code": payment_type_code,
+        "response_code": response_code,
+        "installments_number": installments_number
+    }
+
+    # guardamos en la base de datos
+    try:
+        response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
+        #response.raise_for_status()
+        response_data = response.json()
+        print(response_data)
+    except requests.RequestException as e:
+        print(f"Error al guardar la transacción en la base de datos: {e}")
+        #return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+
+   # Manejamos el caso en que la transacción es cancelada
+    if status in status_mapping:
+        data = {
+            "resultado": status_mapping[status],
+            "codigo": authorization_code,
+            "monto": amount
+        }
+        return render(request, 'app/transbank.html', data)
     
+    # data si todo sale bien
+    data = {
+        "resultado": status,
+        "codigo": authorization_code,
+        "monto": amount
+    }
+
+    # limpiamos el carrito
+    carrito = Carrito(request)
+    carrito.limpiar()  
+
     return render(request, 'app/transbank.html', data)
+    
+
 
 @login_required
 def ir_a_pagar(request):
     # Realizar la solicitud para crear la transacción en Transbank
     response_data = transbank_create(request)
     
+    # verificamos recibir el token y la url
     if 'token' in response_data and 'url' in response_data:
         token = response_data['token']
         url = response_data['url']
-
-        # Imprimir el token y la URL de respuesta
-        print('Token:', token)
-        print('URL:', url)
-
-        # Llamar a la función para confirmar la transacción
-        transaction_commit(request, token)
 
         # Pasar la URL y el token a la plantilla
         data = {
@@ -137,5 +207,5 @@ def ir_a_pagar(request):
 
         return render(request, 'app/redirect_to_transbank.html', data)
     else:
-        # Manejar el caso en el que la respuesta de transbank_create no contiene el token o la URL
+        # Manejamos el caso en el que la respuesta de transbank_create no contiene el token o la URL
         return JsonResponse({'error': 'No se recibió el token o la URL de Transbank'}, status=500)
