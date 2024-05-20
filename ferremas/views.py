@@ -155,15 +155,17 @@ def transbank(request):
         "installments_number": installments_number
     }
 
+    print(data_db)
+
     # guardamos en la base de datos
     try:
         response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
-        #response.raise_for_status()
+        response.raise_for_status()
         response_data = response.json()
         print(response_data)
     except requests.RequestException as e:
         print(f"Error al guardar la transacción en la base de datos: {e}")
-        #return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
 
    # Manejamos el caso en que la transacción es cancelada
     if status in status_mapping:
