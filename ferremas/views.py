@@ -8,6 +8,8 @@ from django.conf import settings
 from ferremas.Webpay import transbank_create, transaction_commit
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from .forms import CustomUserCreationForm
+from django.contrib.auth import login, authenticate
 
 # Create your views here.
 
@@ -92,7 +94,25 @@ def marca(request, id):
         return redirect('home')
 
 
-       
+def registro(request):
+    data = {
+        'form': CustomUserCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomUserCreationForm(request.POST)
+        if formulario.is_valid():
+            user = formulario.save()
+            # Autenticar y iniciar sesión al usuario recién registrado
+            username = formulario.cleaned_data.get('username')
+            raw_password = formulario.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            if user is not None:
+                login(request, user)
+                return redirect(to='home')
+        data['form'] = formulario
+    return render(request, 'registration/registro.html', data)
+
 
 # crud carrito
 

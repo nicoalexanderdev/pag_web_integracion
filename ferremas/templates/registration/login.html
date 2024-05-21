@@ -22,19 +22,26 @@
             {% csrf_token %}
 
             <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
-            <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="" id="id_username">
+            <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
+              autocomplete="username" maxlength="150" required="" id="id_username">
             <label for="exampleInputEmail1" class="form-label">Contraseña</label>
-            <input class="form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+            <input class="form-control" type="password" name="password" autocomplete="current-password" required=""
+              id="id_password">
             <hr>
 
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-                <a href="{% url 'home' %}" class="btn btn-default">Ir al home</a>
-              </div>
+            <div class="links d-flex justify-content-start">
+
+              <a href="{% url 'home' %}" class="btn btn-default">Ir al home</a> &nbsp; | &nbsp;
+
+              <a href="{% url 'registro' %}" class="btn btn-default">Registrarse</a>
+
             </div>
 
-            <input class="btn btn-primary" type="submit" value="Iniciar Sesión" id="iniciar">
 
+            <div class="d-grid mt-3">
+              <input class="btn btn-success" type="submit" value="Iniciar Sesión" id="iniciar">
+            </div>
+            
           </form>
 
           {% if messages %}
