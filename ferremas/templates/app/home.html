@@ -1,5 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block contenido %}
 <br><br>
 
@@ -12,8 +13,9 @@
           <img src="{{ p.imagen_url }}" class="card-img-top img-fluid" alt="imagen producto">
         </a>
         <div class="card-body">
-          <h5 class="card-title">{{ p.nombre }}</h5>
+          <h5 class="card-title">{{ p.nombre }}</h5>         
           <h6>{{ p.marca_nombre }}</h6>
+          <h3>${{ p.precio | intcomma }}</h3>
         </div>
 
       </div>

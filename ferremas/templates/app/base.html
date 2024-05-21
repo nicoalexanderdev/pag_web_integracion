@@ -75,9 +75,13 @@
 
 
       <!-- carro -->
-      <a href="{% url 'checkout' %}" class="btn btn-light">
+      <a href="{% url 'checkout' %}" class="btn btn-light position-relative">
         <i class="bi bi-cart"></i>
         Mi Carro
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          {{ cantidad_total }}
+          <span class="visually-hidden">unread messages</span>
+        </span>
       </a>
 
 

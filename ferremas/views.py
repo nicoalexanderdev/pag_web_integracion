@@ -70,7 +70,6 @@ def categoria(request, id):
         return redirect('home')
 
 
-
 def marca(request, id):
     try:
         response = requests.get(f'http://{settings.API_BASE_URL}/get-productos-marca/{id}')
@@ -106,7 +105,14 @@ def agregar_carrito(request, id):
     if response.status_code == 200:
         producto_data = response.json()
         carrito.agregar(producto_data)
-        return render(request, 'app/checkout.html')
+        
+        # Redirigir de vuelta a la página desde donde se envió la solicitud
+        referer_url = request.META.get('HTTP_REFERER')
+        if referer_url:
+            return HttpResponseRedirect(referer_url)
+        else:
+            return redirect('home')  # Redirigir a home si no hay referencia
+        
     else:
         # Si la solicitud a la API falla, redirige a una página de error o muestra un mensaje de error
         return HttpResponseRedirect(reverse('home'))

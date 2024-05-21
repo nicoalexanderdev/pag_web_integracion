@@ -31,3 +31,14 @@ def marcas_processor(request):
     except requests.RequestException as e:
         print(f'Error al obtener marcas: {e}')
         return {'marcas': []}
+    
+def get_dollar(request):
+    try:
+        reponse = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value')
+        reponse.raise_for_status()
+        valor_dolar = reponse.json()
+        return {'valor_dolar': valor_dolar['value']}
+    except requests.RequestException as e:
+        print(f'error al obtener valor del dolar actualizado: {e}')
+        return {'valor_dolar': []}
+    

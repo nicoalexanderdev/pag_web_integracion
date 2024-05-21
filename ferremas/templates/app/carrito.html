@@ -1,7 +1,7 @@
 {% load humanize %}
 <h4 class="d-flex justify-content-between align-items-center mb-3">
   <span class="text-primary">Tu Carro</span>
-  <span class="badge bg-primary rounded-pill">{{ total_carrito.cantidad_total }}</span>
+  <span class="badge bg-primary rounded-pill">{{ cantidad_total }}</span>
 </h4>
 
 
@@ -51,8 +51,16 @@
 <ul>
 
   <li class="list-group-item d-flex justify-content-between">
-    <span>Total</span>
-    <strong>${{ total_carrito  | intcomma }}</strong>
+    <span>Total en pesos chilenos</span>
+    <span id="total_carrito" data-value="{{ total_carrito }}">${{ total_carrito | intcomma }}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between">
+    <span>Valor dolar actual</span>
+    <span id="valor_dolar" data-value="{{ valor_dolar }}">${{ valor_dolar | intcomma }}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between">
+    <span>Total en dolares</span>
+    <span>{% widthratio total_carrito valor_dolar 1 %}</span>
   </li>
 
 </ul>
@@ -62,3 +70,4 @@
   <div class="col-6"><a href="{% url 'limpiar-carrito' %}" class="btn btn-danger">Limpiar</a></div>
   <div class="col-6"><a href="{% url 'ir-a-pagar' %}" class="btn btn-success">Ir a pagar</a></div>
 </div>
+

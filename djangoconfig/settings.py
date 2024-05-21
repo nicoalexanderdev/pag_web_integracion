@@ -67,6 +67,7 @@ TEMPLATES = [
                 'ferremas.context_processor.total_carrito',
                 'ferremas.context_processor.categorias_processor',
                 'ferremas.context_processor.marcas_processor',
+                'ferremas.context_processor.get_dollar',
             ],
         },
     },
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'es'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
