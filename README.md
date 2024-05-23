@@ -1,14 +1,21 @@
-# pag_web_integracion
+# Página Web de FerreMas 
 
-Instalar requirements.txt
+1. Primeramente levantar de manera local la API de FerreMas:
 
-pip install -r requirements.txt
+   https://github.com/nixtoon/api_integracion
 
-Levantar servidor en el puerto 7000
 
-py manage.py runserver 7000
+### Instalación de los requerimientos necesarios para levantar de manera local la página web
 
-# Credenciales de prueba transbank
+`pip install -r requirements.txt`
+
+
+### Comando para levantar servidor Django de manera local
+
+`py manage.py runserver 7000`
+
+
+### Credenciales de prueba Transbank
 
 Nro de tarjeta: 4051 8842 3993 7763
 
@@ -16,9 +23,10 @@ Rut: 11.111.111-1
 
 clave: 123
 
-# Credenciales de usuarios
 
-user: cony
+### Credenciales de prueba de usuarios
 
-pass: asde1234
+username: cony
+
+password: asde1234
 
