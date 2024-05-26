@@ -1,0 +1,14 @@
+.form-control.error {
+    border: 1px solid red;
+} 
+
+.error {
+    color: red;
+}
+
+.info-text {
+    color: #6c757d; 
+    font-size: 0.8rem; 
+    margin-top: 5px;
+  }
+

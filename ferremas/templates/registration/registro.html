@@ -16,26 +16,27 @@
 
           <h2>Regístrate Aquí</h2>
           <hr>
-          <form action="" method="post">
+          <form id="formularioRegistro" action="" method="post">
 
             {% csrf_token %}
 
             <div class="row">
               <div class="col-12">
                 <label for="id_username" class="form-label">Nombre de usuario:</label>
-                <input class="form-control" type="text" name="username" maxlength="150" autocapitalize="none"
-                autocomplete="username" autofocus="" required="" id="id_username">
+                <span class="info-text"> (Este campo sólo acepta texto)</span>
+                <input class="form-control" type="text" name="username" maxlength="100" autocapitalize="none"
+                  autocomplete="username" autofocus required id="id_username">
               </div>
             </div>
 
             <div class="row">
               <div class="col-6">
                 <label for="id_first_name" class="form-label">Nombre:</label>
-                <input class="form-control" type="text" name="first_name" maxlength="150" id="id_first_name">
+                <input class="form-control" type="text" name="first_name" maxlength="100" id="id_first_name">
               </div>
               <div class="col-6">
                 <label for="id_last_name" class="form-label">Apellidos:</label>
-                <input class="form-control" type="text" name="last_name" maxlength="150" id="id_last_name">
+                <input class="form-control" type="text" name="last_name" maxlength="100" id="id_last_name">
               </div>
             </div>
 
@@ -45,30 +46,22 @@
                 <input class="form-control" type="email" name="email" maxlength="254" id="id_email">
               </div>
             </div>
-        
+
             <div class="row">
-              <div class="col-6">
+              <div class="col-12">
                 <label for="id_password1" class="form-label">Contraseña:</label>
+                <span class="info-text"> (Contraseña debe ser de 8 caracteres, debe contener letras y números)</span>
                 <input class="form-control" type="password" name="password1" autocomplete="new-password" required=""
-                id="id_password1">
+                  id="id_password1">
               </div>
-              <div class="col-6">
+              <div class="col-12">
                 <label for="id_password2" class="form-label">Confirmar contraseña:</label>
                 <input class="form-control" type="password" name="password2" autocomplete="new-password" required=""
-                id="id_password2">
+                  id="id_password2">
               </div>
             </div>
 
             <hr>
-            <span class="helptext">
-              <ul>
-                <li>Su contraseña no puede asemejarse tanto a su otra información personal.</li>
-                <li>Su contraseña debe contener al menos 8 caracteres.</li>
-                <li>Su contraseña no puede ser una clave utilizada comúnmente.</li>
-                <li>Su contraseña no puede ser completamente numérica.</li>
-              </ul>
-            </span>
-            <br>
 
             <div class="links d-flex justify-content-start">
               <a href="{% url 'home' %}" style="text-decoration: none;">Ir al home</a> &nbsp; | &nbsp;
@@ -91,4 +84,17 @@
 </div>
 <br><br>
 
+{% endblock %}
+
+
+{% block js %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+  integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+<!-- js de validaciones -->
+<script src="{% static 'app/js/gestionRegistro.js' %}"></script>
 {% endblock %}
