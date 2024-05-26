@@ -109,7 +109,8 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Ir al Home <i class="bi bi-house"></i></a>
+              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Ir al Home <i
+                  class="bi bi-house"></i></a>
             </li>
             <hr>
             {% if user.is_authenticated %}
@@ -124,18 +125,21 @@
                 <button type="submit">Logout</button>
               </form>
               <a class="dropdown-item" href="#"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Salir <i class="bi bi-x-circle"></i></a>
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Salir <i
+                  class="bi bi-x-circle"></i></a>
             </li>
 
             <hr>
 
             {% else %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Iniciar Sesión <i class="bi bi-box-arrow-right"></i></a>
+              <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Iniciar Sesión <i
+                  class="bi bi-box-arrow-right"></i></a>
             </li>
             <hr>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'registro' %}">Registrarse <i class="bi bi-check-square"></i></a>
+              <a class="nav-link active" aria-current="page" href="{% url 'registro' %}">Registrarse <i
+                  class="bi bi-check-square"></i></a>
             </li>
             <hr>
             {% endif %}
@@ -268,14 +272,25 @@
     </div>
   </footer>
 
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+    {% for m in messages %}
+    <script>
+      Swal.fire({
+        "icon": "{{ m.tags }}",
+        "text": "{{m}}",
+      })
+    </script>
+    {% endfor %}
+    {% endif %}
+
 
   <!-- scripts de bootstrap -->
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <!-- libreria jquery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
   {% block js %}

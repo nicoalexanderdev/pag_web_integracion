@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login, authenticate
+from django.contrib import messages
 
 # Create your views here.
 
@@ -109,8 +110,13 @@ def registro(request):
             user = authenticate(username=username, password=raw_password)
             if user is not None:
                 login(request, user)
+                messages.success(request, 'Te has registrado correctamente')
                 return redirect(to='home')
+        else:
+            messages.error(request, 'No se ha podido registrar, intente nuevamente')
+                
         data['form'] = formulario
+
     return render(request, 'registration/registro.html', data)
 
 

@@ -17,16 +17,25 @@
 
           <h2>Login</h2>
           <hr>
-          <form action="" method="post">
+          <form id="formularioLogin" action="" method="post">
 
             {% csrf_token %}
+            <div class="row">
+              <div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+                <span class="info-text"> (Este campo sólo acepta texto)</span>
+                <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
+                  autocomplete="username" maxlength="150" required="" id="id_username">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">Contraseña</label>
+                <input class="form-control" type="password" name="password" autocomplete="current-password" required=""
+                  id="id_password">
+              </div>
+            </div>
 
-            <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
-            <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
-              autocomplete="username" maxlength="150" required="" id="id_username">
-            <label for="exampleInputEmail1" class="form-label">Contraseña</label>
-            <input class="form-control" type="password" name="password" autocomplete="current-password" required=""
-              id="id_password">
             <hr>
 
             <div class="links d-flex justify-content-start">
@@ -41,17 +50,8 @@
             <div class="d-grid mt-3">
               <input class="btn btn-success" type="submit" value="Iniciar Sesión" id="iniciar">
             </div>
-            
+
           </form>
-
-          {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-danger" role="alert">
-            {{ message }}
-          </div>
-          {% endfor %}
-          {% endif %}
-
 
         </div>
       </div>
@@ -63,4 +63,16 @@
 
 </div>
 
+{% endblock %}
+
+{% block js %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+  integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+<!-- js de validaciones -->
+<script src="{% static 'app/js/gestionLogin.js' %}"></script>
 {% endblock %}
