@@ -1,6 +1,8 @@
 {% extends 'app/base.html' %}
 {% load static %}
 {% load humanize %}
+
+
 {% block contenido %}
 <br><br>
 
@@ -8,25 +10,21 @@
   <div class="row">
     {% for p in productos %}
     <div class="col-12 col-md-6 col-lg-3">
-      <div class="card mb-3">
-        <a href="{% url 'detalle_producto' p.id %}">
-          <img src="{{ p.imagen_url }}" class="card-img-top img-fluid" alt="imagen producto">
-        </a>
-        <div class="card-body">
-          <h5 class="card-title">{{ p.nombre }}</h5>         
-          <h6>{{ p.marca_nombre }}</h6>
-          <h3>${{ p.precio | intcomma }}</h3>
-        </div>
+      <a href="{% url 'detalle_producto' p.id %}" style="text-decoration: none;">
 
-      </div>
+        <div class="card mb-3 zoom-card">
+
+          <img src="{{ p.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
+
+          <div class="card-body">
+            <h5 class="card-title">{{ p.nombre }}</h5>
+            <h6>{{ p.marca_nombre }}</h6>
+            <h3>${{ p.precio | intcomma }}</h3>
+          </div>
+        </div>
+      </a>
     </div>
-    {% if forloop.counter|divisibleby:4 %}
-  </div>
-  <div class="row">
-    {% endif %}
-    <br>
     {% endfor %}
   </div>
 </div>
-
 {% endblock %}

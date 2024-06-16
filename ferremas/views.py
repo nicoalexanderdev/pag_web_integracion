@@ -17,13 +17,15 @@ from django.contrib import messages
 
 def index(request):
     try:
-        productos = requests.get(f'http://{settings.API_BASE_URL}').json()
+        response = requests.get(f'http://{settings.API_BASE_URL}')
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        productos = response.json()
         data = {
             'productos': productos,
         }
         return render(request, 'app/home.html', data)
-    except json.JSONDecodeError as e:
-        return JsonResponse({'error': 'Error de decodificación JSON: {}'.format(str(e))}, status=500)
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': 'Error al obtener datos de la API: {}'.format(str(e))}, status=500)
 
 
 def detalle_producto(request, id):
