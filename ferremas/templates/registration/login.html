@@ -13,16 +13,26 @@
     <div class="col-12 col-md-6 offset-md-3">
       <br><br><br>
       <div class="card">
+
+        <div class="card-header">
+          <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="height: 5px">
+            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 35%"></div>
+          </div>
+          <br>
+          <h4>Inicio de Sesión</h4>
+        </div>
+
+
         <div class="card-body">
 
-          <h2>Login</h2>
-          <hr>
           <form id="formularioLogin" action="" method="post">
 
             {% csrf_token %}
             <div class="row">
               <div class="col-12">
-                <label for="exampleInputEmail1" class="form-label">Nombre de usuario</label>
+                <label for="exampleInputEmail1" class="form-label">
+                  <strong>Nombre de usuario</strong>
+                </label>
                 <span class="info-text"> (Este campo sólo acepta texto)</span>
                 <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
                   autocomplete="username" maxlength="150" required="" id="id_username">
@@ -30,25 +40,36 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <label for="exampleInputEmail1" class="form-label">Contraseña</label>
-                <input class="form-control" type="password" name="password" autocomplete="current-password" required=""
-                  id="id_password">
+                <label for="exampleInputEmail1" class="form-label">
+                  <strong>Contraseña</strong>
+                </label>
+                <span class="info-text"> (Este campo debe tener letras y números)</span>
+                <div class="input-group mb-3">
+                  <input class="form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+                  <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                      <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
+                  </button>
+              </div>
               </div>
             </div>
 
             <hr>
 
-            <div class="links d-flex justify-content-start">
 
-              <a href="{% url 'home' %}" class="btn btn-default">Ir al home</a> &nbsp; | &nbsp;
-
-              <a href="{% url 'registro' %}" class="btn btn-default">Registrarse</a>
-
-            </div>
 
 
             <div class="d-grid mt-3">
               <input class="btn btn-success" type="submit" value="Iniciar Sesión" id="iniciar">
+            </div>
+
+            <br>
+
+            <div class="links d-flex justify-content-start">
+
+              <a href="{% url 'home' %}" class="btn btn-default"> <i class="bi bi-skip-backward-circle"></i> Volver al paso anterior</a> &nbsp; | &nbsp;
+
+              <a href="{% url 'registro' %}" class="btn btn-default"> <i class="bi bi-person-plus"></i> Crear cuenta</a>
+
             </div>
 
           </form>
@@ -75,4 +96,5 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
 <!-- js de validaciones -->
 <script src="{% static 'app/js/gestionLogin.js' %}"></script>
+<script src="{% static 'app/js/eyeSlash.js' %}"></script>
 {% endblock %}

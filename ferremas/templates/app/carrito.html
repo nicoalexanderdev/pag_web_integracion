@@ -10,43 +10,38 @@
 
 {% if request.session.carrito.items %}
 
-
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Producto</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Accion</th>
-    </tr>
-  </thead>
+<div class="row">
   {% for key, value in request.session.carrito.items %}
-  <tbody>
-    <tr>
-      <td>{{ value.nombre}}</td>
-      <td>${{ value.acumulado | intcomma }}</td>
-      <td>{{ value.cantidad }}</td>
-      <td>
-        <a href="{% url 'agregar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">+</a>
-        <a href="{% url 'restar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">-</a>
-      </td>
-    </tr>
-  </tbody>
+  <div class="col-6">
+    <img class="img-fluid w-100" src="{{ value.image_url }}" alt="imagen-producto">
+  </div>
+  <div class="col-6">
+    <a href="#" class="btn btn-default">
+      <strong>{{ value.marca }}</strong>
+    </a>  
+    <p>{{ value.nombre }}</p>
+    <h5>ID: {{ value.producto_id }}</h5>
+    <h5>${{ value.acumulado | intcomma }}</h5>
+    <div>
+      <h5>cantidad: {{ value.cantidad }}</h5>
+      <a href="{% url 'agregar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">+</a>
+      <a href="{% url 'restar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">-</a>
+    </div>
+    <br>
+  </div>
+  <hr>
+  {% endfor %}
+  {% else %}
 
+  <div class="alert alert-danger text-center">
+    Sin Productos
+  </div>
 
-
-{% endfor %}
-{% else %}
-
-<div class="alert alert-danger text-center">
-  Sin Productos
 </div>
-
 {% endif %}
 
-</table>
+<br>
+<hr>
 
 <ul>
 
@@ -66,8 +61,7 @@
 </ul>
 
 <hr>
-<div class="row text-center">
-  <div class="col-6"><a href="{% url 'limpiar-carrito' %}" class="btn btn-danger">Limpiar</a></div>
-  <div class="col-6"><a href="{% url 'ir-a-pagar' %}" class="btn btn-success">Ir a pagar</a></div>
+<div class="d-grid gap-2">
+  <a href="{% url 'limpiar-carrito' %}" class="btn btn-danger">Limpiar</a>
+  <a href="{% url 'checkout' %}" class="btn btn-success">Ir al Checkout</a>
 </div>
-

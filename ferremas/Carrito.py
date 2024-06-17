@@ -22,7 +22,8 @@ class Carrito:
              'marca'  : producto['marca_nombre'], 
              'acumulado'  : producto['precio'],
              'cantidad'   : 1,
-             'imagen_url': producto['imagen_url']
+             'image_url': producto['image_url'],
+             'marca_id': producto['marca']
             }
         else:
             self.carrito[id]['cantidad'] += 1

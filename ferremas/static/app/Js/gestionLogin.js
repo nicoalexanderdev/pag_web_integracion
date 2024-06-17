@@ -35,9 +35,10 @@ $(document).ready(function () {
                 required: "Contraseña es requerido",
                 espacios: "No se aceptan espacios",
                 minlength: "El minimo debe ser de 8 caracteres",
-                maxlength: "El maximo debe der de 8 caracteres"
+                maxlength: "El maximo debe ser de 8 caracteres"
             }
         }
-    })
+    });
+
     event.preventDefault();
 })

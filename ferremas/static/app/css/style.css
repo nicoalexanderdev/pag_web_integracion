@@ -20,3 +20,8 @@
     transform: scale(1.05);
 }
 
+#togglePassword {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+

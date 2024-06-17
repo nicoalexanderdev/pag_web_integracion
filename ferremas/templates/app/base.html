@@ -75,21 +75,37 @@
 
 
       <!-- carro -->
-      <a href="{% url 'checkout' %}" class="btn btn-light position-relative">
+      <a href="#offcanvasExample" data-bs-toggle="offcanvas" class="btn btn-light position-relative" role="button"
+        aria-controls="offcanvasExample">
         <i class="bi bi-cart"></i>
         Mi Carro
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
           {{ cantidad_total }}
-          <span class="visually-hidden">unread messages</span>
+          <span class="visually-hidden">cantidad carrito</span>
         </span>
       </a>
 
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Carrito</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+
+          <!--CARRO-->
+          <div class="col-12">
+            {% include 'app/carrito.html' %}
+          </div>
+
+        </div>
+      </div>
+
 
       <!-- boton de hamburguesa -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+      <!-- <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
         aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
+      </button> -->
 
 
 
@@ -272,18 +288,18 @@
     </div>
   </footer>
 
-    <!-- sweet alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {% if messages %}
-    {% for m in messages %}
-    <script>
-      Swal.fire({
-        "icon": "{{ m.tags }}",
-        "text": "{{m}}",
-      })
-    </script>
-    {% endfor %}
-    {% endif %}
+  <!-- sweet alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  {% if messages %}
+  {% for m in messages %}
+  <script>
+    Swal.fire({
+      "icon": "{{ m.tags }}",
+      "text": "{{m}}",
+    })
+  </script>
+  {% endfor %}
+  {% endif %}
 
 
   <!-- scripts de bootstrap -->
