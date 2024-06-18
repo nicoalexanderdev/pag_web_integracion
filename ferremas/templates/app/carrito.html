@@ -16,20 +16,22 @@
     <img class="img-fluid w-100" src="{{ value.image_url }}" alt="imagen-producto">
   </div>
   <div class="col-6">
-    <a href="#" class="btn btn-default">
+    <a href="#" class="btn btn-default" style="font-size: 0.5rem;">
       <strong>{{ value.marca }}</strong>
-    </a>  
-    <p>{{ value.nombre }}</p>
-    <h5>ID: {{ value.producto_id }}</h5>
-    <h5>${{ value.acumulado | intcomma }}</h5>
-    <div>
-      <h5>cantidad: {{ value.cantidad }}</h5>
-      <a href="{% url 'agregar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">+</a>
-      <a href="{% url 'restar-carrito' value.producto_id %}" class="btn badge text-bg-secondary">-</a>
+    </a>
+    <p style="font-size: 0.5rem;">{{ value.nombre }}</p>
+    <p style="font-size: 0.5rem;">ID: {{ value.producto_id }}</p>
+    <p style="font-size: 0.5rem;">${{ value.acumulado | intcomma }}</p>
+
+    <div class="btn-group btn-group-sm mb-3" role="group">
+      <a href="{% url 'agregar-carrito' value.producto_id %}" type="button" class="btn btn-outline-secondary">+</a>
+      <button type="button" class="btn btn-outline-secondary">
+        <strong>{{ value.cantidad }}</strong>
+      </button>
+      <a href="{% url 'restar-carrito' value.producto_id %}" type="button" class="btn btn-outline-secondary">-</a>
     </div>
-    <br>
+  
   </div>
-  <hr>
   {% endfor %}
   {% else %}
 
@@ -40,8 +42,6 @@
 </div>
 {% endif %}
 
-<br>
-<hr>
 
 <ul>
 

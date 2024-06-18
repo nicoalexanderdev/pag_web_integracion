@@ -6,10 +6,9 @@
 {% endblock %}
 
 {% block contenido %}
-<br><br><br>
-
 
 <div class="container">
+  <br><br>
   <div class="row">
     <div class="col-12 col-md-7">
 
@@ -19,13 +18,15 @@
         <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 50%"></div>
       </div>
       <br>
-      <hr>
+
+
+      <!-- tipo de entrega -->
       <h4>
         <Strong>
           Seleccionar tipo de entrega
         </Strong>
       </h4>
-
+      <br>
       <ul class="list-group">
         <li class="list-group-item align-items-center">
           <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro">
@@ -37,8 +38,6 @@
           </span>
         </li>
 
-        <br>
-
         <li class="list-group-item">
           <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho">
           <label class="form-check-label" for="despcho">
@@ -46,114 +45,26 @@
           </label>
         </li>
       </ul>
-
-      <hr>
-
-      <h4 class="mb-3">Dirección de envio</h4>
-
-
-      <form class="needs-validation" novalidate id="form_carrito">
-
-
-        <div class="row g-3">
-
-
-          <div class="col-sm-6">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" placeholder="{{ user.first_name}}" name="nombre" disabled>
-          </div>
-
-          <div class="col-sm-6">
-            <label for="apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" id="apellido" placeholder="{{ user.last_name}}" name="apellido" disabled>
-          </div>
-
-          <div class="col-12">
-            <label for="email" class="form-label">Mail</label>
-            <input type="email" class="form-control" id="email" placeholder="{{ user.email }}" name="correo" disabled>
-          </div>
-
-          <div class="col-12">
-            <label for="direccion" class="form-label">Direccion</label>
-            <input type="text" class="form-control" id="direccion" placeholder="Moneda 1234">
-            <br>
-            <div class="map" id="map"></div>
-          </div>
-
-          <div class="col-md-5">
-            <label for="regiones" class="form-label">Region</label>
-            <select class="form-select" id="regiones" required>
-              <option value="">Seleccione una region</option>
-              <option value=""> - </option>
-            </select>
-          </div>
-
-          <div class="col-md-4">
-            <label for="comunas" class="form-label">Comuna</label>
-            <select class="form-select" id="comunas" required>
-              <option value=""> - </option>
-            </select>
-          </div>
-
-          <div class="col-md-3">
-            <label for="cod_postal" class="form-label">Codigo postal</label>
-            <input type="text" class="form-control" id="zip" placeholder="" name="postal">
-            <div class="invalid-feedback">
-              Codigo postal.
-            </div>
-          </div>
-        </div>
-
-        <hr class="my-4">
-
-
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="guardar_info">
-          <label class="form-check-label" for="guradar_info">Guardar esta informacion para la proxima vez.</label>
-        </div>
-
-      </form>
-
-      <hr class="my-4"> 
-
-
     </div>
 
+    <!-- carrito -->
     <div class="col-12 col-md-5">
-
-      <!--CARRO-->
-      <div class="col-12">
-        {% include 'app/carrito.html' %}
-      </div>
+      {% include 'app/carrito.html' %}
     </div>
-
   </div>
 </div>
+</div>
 
-
-<br><br><br>
 {% endblock %}
 
 {% block js %}
-
-
-<!-- Librería jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<!-- Librería jQuery Validate -->
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
-<!-- metodos de validacion adicionales -->
-<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-<!-- Traducciones de las validaciones -->
-<!-- <script src="{% static 'app/js/traducciones.js' %}"></script> -->
-<!-- Validación tarjeta -->
-<!-- <script src="{% static 'app/js/despliegue.js' %}"></script> -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+  integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
 <!-- Ubicación -->
 <script src="{% static 'app/js/ubicacion.js' %}"></script>
-<!-- Validación checkout -->
-<!-- <script src="{% static 'app/js/formulario_checkout.js' %}"></script> -->
-
 {% endblock %}
-
-</body>
-
-</html>

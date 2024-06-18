@@ -1,3 +1,10 @@
+.footer {
+    width: 100%;
+    background-color: #afcec6; 
+    padding: 20px 0;
+    border-top: 1px solid rgb(189, 189, 189);
+}
+
 .form-control.error {
     border: 1px solid red;
 } 

@@ -25,12 +25,10 @@
 
 <body>
 
+
   <!-- Barra de navegacion -->
   <nav class="navbar bg-body-tertiary">
-
-
     <div class="container">
-
       <!-- imagen de logo -->
       <a class="navbar-brand" href="{% url 'home' %}">
         <img src="{% static 'app/img/ferremas_logo.png' %}" alt="Logo" width="80" height="80"
@@ -194,8 +192,11 @@
           </ul>
         </div>
       </div>
+    </div>
   </nav>
 
+
+  <!-- contenido -->
   {% block contenido %}
 
 
@@ -220,28 +221,13 @@
   </section>
 
   <!-- Pie de pagina -->
-  <footer class="text-center text-light pb-5 pt-4"
-    style="background-color: #afcec6; border-top: 1px solid rgb(189, 189, 189);" id="sec2">
-    <div class="container pt-0">
+  <footer class="footer">
+    <div class="container-fluid">
       <div class="row justify-content-center mt-3 pt d-flex">
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-md-3">
           <img class="mb-0" src="{% static 'app/img/ferremas_logo.png' %}" alt="" width="150px">
-          <div class="row justify-content-center mt-1">
-            <div class="col-12">
-              <ul class="list-unstyled d-flex justify-content-center">
-                <li class="me-3"><a href="#" class="social-icon"><i
-                      class="fab fa-facebook-f text-secondary link-dark"></i></a></li>
-                <li class="me-3"><a href="#" class="social-icon"><i
-                      class="fab fa-twitter text-secondary link-dark"></i></a></li>
-                <li class="me-3"><a href="#" class="social-icon"><i
-                      class="fab fa-instagram text-secondary link-dark"></i></a></li>
-                <li class="me-3"><a href="#" class="social-icon"><i
-                      class="fab fa-linkedin text-secondary link-dark"></i></a></li>
-              </ul>
-            </div>
-          </div>
         </div>
-        <div class="col-6 col-md text-start">
+        <div class="col-12 col-md-3 text-start">
           <h5 class="text-black-50">Contáctanos</h5>
           <ul class="list-unstyled text-small align-items-center ulp ul-horizontal">
             <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Mesa de ayuda</a></li>
@@ -251,7 +237,7 @@
                 ferremas@contacto.cl</a></li>
           </ul>
         </div>
-        <div class="col-6 col-md text-start">
+        <div class="col-12 col-md-3 text-start">
           <h5 class="text-black-50">Ayuda</h5>
           <ul class="list-unstyled text-small ulp ul-horizontal">
             <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Servicio al cliente</a>
@@ -264,7 +250,7 @@
                 condiciones</a></li>
           </ul>
         </div>
-        <div class="col-6 col-md text-start">
+        <div class="col-12 col-md-3 text-start">
           <h5 class="text-black-50">Sobre nosotros</h5>
           <ul class="list-unstyled text-small ulp ul-horizontal">
             <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Quienes somos</a></li>
@@ -277,14 +263,18 @@
             </li>
           </ul>
         </div>
-        <div class="col-12 col-md-auto">
+        <div class="col-12 col-md-3">
           <img class="mb-2" src="{% static 'app/img/Webpay.webp' %}" alt="" width="200px">
         </div>
       </div>
-    </div>
-    <hr class="text-black-50 border-1">
-    <div class="text-center text-black-50 pt-0" style="background-color: #afcec6;">
-      © 2024 FerreMas. Todos los derechos reservados.
+      <div class="row">
+        <div class="col-12">
+          <hr class="text-black-50 border-1">
+          <div class="text-center text-black-50 pt-0" style="background-color: #afcec6;">
+            © 2024 FerreMas. Todos los derechos reservados.
+          </div>
+        </div>
+      </div>
     </div>
   </footer>
 
@@ -305,14 +295,13 @@
   <!-- scripts de bootstrap -->
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 
 
   {% block js %}
 
   {% endblock %}
-
 
 </body>
 
