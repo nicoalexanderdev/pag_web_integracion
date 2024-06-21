@@ -47,7 +47,7 @@ def detalle_producto(request, id):
         # O mostrar un mensaje de error al usuario
         return HttpResponseRedirect(reverse('home'))
     
-
+@login_required
 def checkout(request):
     context = {}
     return render(request, 'app/checkout.html')
@@ -133,7 +133,7 @@ def agregar_carrito(request, id):
     if response.status_code == 200:
         producto_data = response.json()
         carrito.agregar(producto_data)
-        
+        messages.success(request, 'Producto agregado al carrito')
         # Redirigir de vuelta a la página desde donde se envió la solicitud
         referer_url = request.META.get('HTTP_REFERER')
         if referer_url:

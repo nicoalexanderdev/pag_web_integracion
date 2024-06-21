@@ -37,161 +37,119 @@
 
 
       <!-- buscador -->
-      <form class="d-flex justify-content-center mt-3" role="search">
-        <input class="form-control me-2" type="search" placeholder="¡Hola! ¿Qué estás buscando?" aria-label="Search"
-          style="width: 500px;">
-        <button class="btn btn-success" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+      <form class="d-flex justify-content-center" role="search">
+        <div class="input-group">
+          <input class="form-control form-control-sm" type="search" placeholder="¡Hola! ¿Qué estás buscando?" aria-label="Search" style="width: 400px;">
+          <button class="btn btn-success btn-sm" type="submit">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
       </form>
 
-      {% if user.is_authenticated %}
-      <div class="dropdown">
-        <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          {{ user.username }} <i class="bi bi-person-check-fill"></i>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Mi perfil</a></li>
-          <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-          </form>
-          <a class="dropdown-item" href="#"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Salir</a>
-        </ul>
-      </div>
-      {% else %}
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
 
-      <!-- iniciar sesion -->
-      <a href="{% url 'login' %}" class="btn btn-light">
-        <i class="bi bi-person"></i>
-        ¡Hola! Inicia Sesión
-      </a>
-
-      {% endif %}
-
-
-
-      <!-- carro -->
-      <a href="#offcanvasExample" data-bs-toggle="offcanvas" class="btn btn-light position-relative" role="button"
-        aria-controls="offcanvasExample">
-        <i class="bi bi-cart"></i>
-        Mi Carro
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          {{ cantidad_total }}
-          <span class="visually-hidden">cantidad carrito</span>
-        </span>
-      </a>
-
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Carrito</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-
-          <!--CARRO-->
-          <div class="col-12">
-            {% include 'app/carrito.html' %}
-          </div>
-
-        </div>
-      </div>
-
-
-      <!-- boton de hamburguesa -->
-      <!-- <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
-        aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
-
-
-
-
-      <!-- Links interior de la hamburguesa  -->
-      <div class="offcanvas offcanvas-end bg-body-tertiary" tabindex="-1" id="offcanvasDarkNavbar"
-        aria-labelledby="offcanvasDarkNavbarLabel">
-
-        <!-- titulo hamburguesa -->
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Ferremas</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-            aria-label="Close"></button>
-        </div>
-
-        <!-- cuerpo hamburguesa -->
-        <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Ir al Home <i
-                  class="bi bi-house"></i></a>
-            </li>
-            <hr>
-            {% if user.is_authenticated %}
-
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Mi perfil <i class="bi bi-person"></i></a>
-            </li>
-            <hr>
-            <li>
+          {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.username }} <i class="bi bi-person-check-fill"></i>
+            </button>
+            <ul class="dropdown-menu">
               <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
               </form>
               <a class="dropdown-item" href="#"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Salir <i
-                  class="bi bi-x-circle"></i></a>
-            </li>
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Salir</a>
+            </ul>
+          </div>
+          {% else %}
+          <div class="dropdown">
+            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Cuenta <i class="bi bi-person-check-fill"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <!-- iniciar sesion -->
+              <li>
+                <a href="{% url 'login' %}" class="dropdown-item">
+                  <i class="bi bi-person"></i>
+                  ¡Hola! Inicia Sesión
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{% url 'registro' %}">
+                  <i class="bi bi-check-square"></i>
+                  Registrarse
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        {% endif %}
 
-            <hr>
+        <li class="nav-item">
 
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Iniciar Sesión <i
-                  class="bi bi-box-arrow-right"></i></a>
-            </li>
-            <hr>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'registro' %}">Registrarse <i
-                  class="bi bi-check-square"></i></a>
-            </li>
-            <hr>
-            {% endif %}
-
-            <!-- categorias -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Categorias
-              </a>
+          <!-- categorias -->
+          <div class="dropdown">
+            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Categorías
+            </button>
+            <ul class="dropdown-menu">
+              {% for c in categorias %}
+              <li><a class="dropdown-item" href="{% url 'categoria' c.id %}">{{ c.nom_categoria }}</a></li>
               <hr>
-              <ul class="dropdown-menu">
-                {% for c in categorias %}
-                <li><a class="dropdown-item" href="{% url 'categoria' c.id %}">{{ c.nom_categoria }}</a></li>
-                <hr>
-                {% endfor %}
-              </ul>
-            </li>
+              {% endfor %}
+            </ul>
+          </div>
 
-            <!-- marcas -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Marcas
-              </a>
+        </li>
+        <li class="nav-item">
+
+          <!-- marcas -->
+          <div class="dropdown">
+            <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Marcas
+            </button>
+            <ul class="dropdown-menu">
+              {% for m in marcas %}
+              <li><a class="dropdown-item" href="{% url 'marca' m.id %}">{{ m.nom_marca }}</a></li>
               <hr>
-              <ul class="dropdown-menu">
-                {% for m in marcas %}
-                <li><a class="dropdown-item" href="{% url 'marca' m.id %}">{{ m.nom_marca }}</a></li>
-                <hr>
-                {% endfor %}
-              </ul>
-            </li>
+              {% endfor %}
+            </ul>
+          </div>
 
 
-          </ul>
-        </div>
-      </div>
+        </li>
+        <li class="nav-item">
+
+          <!-- carro -->
+          <a href="#offcanvasExample" data-bs-toggle="offcanvas" class="btn btn-light position-relative" role="button"
+            aria-controls="offcanvasExample">
+            <i class="bi bi-cart"></i>
+            Mi Carro
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{ cantidad_total }}
+              <span class="visually-hidden">cantidad carrito</span>
+            </span>
+          </a>
+
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasExampleLabel">Carrito</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+              <!--CARRO-->
+              <div class="col-12">
+                {% include 'app/carrito.html' %}
+              </div>
+
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </nav>
 

@@ -15,7 +15,8 @@
       <!-- bar progress -->
       <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="50" aria-valuemin="0"
         aria-valuemax="100" style="height: 5px">
-        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 50%"></div>
+        <div id="barra-progreso" class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+          style="width: 50%"></div>
       </div>
       <br>
 
@@ -45,6 +46,66 @@
           </label>
         </li>
       </ul>
+      <br>
+      <div id="formulario-retiro" style="display: none;">
+        <!-- Contenido del formulario de retiro -->
+        <h4>Formulario de Retiro en Tienda</h4>
+        <form>
+          <!-- Campos del formulario de retiro -->
+          <!-- Por ejemplo: -->
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre">
+        </form>
+        <br>
+      </div>
+      <div id="formulario-despacho" style="display: none;">
+        <!-- Contenido del formulario de despacho -->
+        <div class="card">
+          <div class="card-header">
+            <h5>Agrega tu dirección</h5>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="direccion" class="form-label">
+                      <strong>Buscar dirección</strong>
+                    </label>
+                    <input type="text" class="form-control form-control-sm" id="direccion"
+                      placeholder="Ingresa tu dirección">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="numero" class="form-label">
+                      <strong>Número</strong>
+                    </label>
+                    <input type="text" class="form-control form-control-sm" id="numero"
+                      placeholder="Número de domicilio">
+                  </div>
+                  <div class="mb-3">
+                    <label for="dpto" class="form-label">
+                      <strong>Piso / Oficina / Apto / Depto</strong>
+                    </label>
+                    <input type="text" class="form-control form-control-sm" id="dpto"
+                      placeholder="Descripción de dirección">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <!-- agregar google maps  -->
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div class="justify-content-start">
+        <a href="#" class="btn btn-success" onclick="continuar()">Continuar</a>
+      </div>
     </div>
 
     <!-- carrito -->
@@ -67,4 +128,5 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
 <!-- Ubicación -->
 <script src="{% static 'app/js/ubicacion.js' %}"></script>
+<script src="{% static 'app/js/carrito.js' %}"></script>
 {% endblock %}
