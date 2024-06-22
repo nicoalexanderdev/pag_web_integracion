@@ -30,7 +30,7 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item align-items-center">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro">
+          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro" onchange="continuar()">
           <label class="form-check-label" for="retiro">
             <strong>Retiro en tienda</strong>
           </label>
@@ -40,7 +40,7 @@
         </li>
 
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho">
+          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho" onchange="continuar()">
           <label class="form-check-label" for="despcho">
             <strong>Despacho a Domicilio</strong>
           </label>
@@ -65,7 +65,7 @@
             <h5>Agrega tu dirección</h5>
           </div>
           <div class="card-body">
-            <form method="post">
+            <form method="post" id="despacho-form">
               <div class="row">
                 <div class="col-12">
                   <div class="mb-3">
@@ -73,38 +73,66 @@
                       <strong>Buscar dirección</strong>
                     </label>
                     <input type="text" class="form-control form-control-sm" id="direccion"
-                      placeholder="Ingresa tu dirección">
+                      placeholder="Ingresa tu dirección" onchange="buscarDireccion()" name="buscarDireccion">
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
+                  <div class="mb-3">
+                    <label for="dir" class="form-label">
+                      <strong>Dirección</strong>
+                    </label>
+                    <input type="text" class="form-control form-control-sm" id="dir" placeholder="autocomplete..." name="dir">
+                  </div>
                   <div class="mb-3">
                     <label for="numero" class="form-label">
                       <strong>Número</strong>
                     </label>
                     <input type="text" class="form-control form-control-sm" id="numero"
-                      placeholder="Número de domicilio">
+                      placeholder="Número de domicilio" name="numero">
                   </div>
                   <div class="mb-3">
                     <label for="dpto" class="form-label">
                       <strong>Piso / Oficina / Apto / Depto</strong>
                     </label>
                     <input type="text" class="form-control form-control-sm" id="dpto"
-                      placeholder="Descripción de dirección">
+                      placeholder="Descripción (opcional)" name="descripcion">
+                  </div>
+                  <div class="mb-3">
+                    <label for="regiones" class="form-label">
+                      <strong>Región</strong>
+                    </label>
+                    <select class="form-select" id="regiones" name="region" required>
+                      <option value="">Seleccione una región</option>
+                      <option value=""> - </option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="comunas" class="form-label">
+                      <strong>Comuna</strong>
+                    </label>
+                    <select class="form-select" id="comunas" name="comuna" required>
+                      <option value=""> - </option>
+                    </select>
                   </div>
                 </div>
-                <div class="col-6">
-                  <!-- agregar google maps  -->
+                <div class="col-12 col-md-6">
+                  <!-- google maps  -->
+                  <div class="map" id="map"></div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <div class="d-grid">
+                      <a class="btn btn-success btn-sm" href="#">Guardar Direccion</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
         <br>
-      </div>
-      <div class="justify-content-start">
-        <a href="#" class="btn btn-success" onclick="continuar()">Continuar</a>
       </div>
     </div>
 
@@ -129,4 +157,8 @@
 <!-- Ubicación -->
 <script src="{% static 'app/js/ubicacion.js' %}"></script>
 <script src="{% static 'app/js/carrito.js' %}"></script>
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc&libraries=places&callback=initMap"></script>
+<script src="{% static 'app/js/funcionesGoogleMaps.js' %}"></script>
+<script src="{% static 'app/js/gestionCheckout.js' %}"></script>
 {% endblock %}
