@@ -11,6 +11,6 @@ function continuar() {
       document.getElementById('formulario-despacho').style.display = 'block';
     }
     // Actualizar la barra de progreso al 75%
-    document.getElementById('barra-progreso').style.width = '75%';
-    document.getElementById('barra-progreso').setAttribute('aria-valuenow', '75');
+    document.getElementById('barra-progreso').style.width = '70%';
+    document.getElementById('barra-progreso').setAttribute('aria-valuenow', '70');
 }

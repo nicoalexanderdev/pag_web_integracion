@@ -12,11 +12,7 @@ $(document).ready(function () {
             buscarDireccion: {
                 required: true
             },
-            dir:{
-                required: true,
-                espacios: true,
-                lettersOnly: true
-            },
+            
             numero: {
                 required: true,
                 espacios: true,
@@ -26,6 +22,9 @@ $(document).ready(function () {
                 number: true
             },
             region: {
+                required: true
+            },
+            provincia: {
                 required: true
             },
             comuna: {
@@ -36,11 +35,7 @@ $(document).ready(function () {
             buscarDireccion: {
                 required:"Por favor busca tu direccion"
             },
-            dir: {
-                required: "Por favor busca tu direccion",
-                espacios: "No se aceptan espacios",
-                lettersOnly: "Solo se aceptan letras"
-            },
+            
             numero: {
                 required: "Por favor ingresa tu numero de direccion",
                 espacios: "No se aceptan espacios",
@@ -51,6 +46,9 @@ $(document).ready(function () {
             },
             region: {
                 required: "Region es requerida"
+            },
+            provincia: {
+                required: "Provincia es requerida"
             },
             comuna: {
                 required: "Comuna es requerida"

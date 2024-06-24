@@ -1,98 +1,35 @@
-let RegionesYcomunas = {
 
-	"regiones": [{
-			"NombreRegion": "Arica y Parinacota",
-			"comunas": ["Arica", "Camarones", "Putre", "General Lagos"]
-	},
-		{
-			"NombreRegion": "Tarapacá",
-			"comunas": ["Iquique", "Alto Hospicio", "Pozo Almonte", "Camiña", "Colchane", "Huara", "Pica"]
-	},
-		{
-			"NombreRegion": "Antofagasta",
-			"comunas": ["Antofagasta", "Mejillones", "Sierra Gorda", "Taltal", "Calama", "Ollagüe", "San Pedro de Atacama", "Tocopilla", "María Elena"]
-	},
-		{
-			"NombreRegion": "Atacama",
-			"comunas": ["Copiapó", "Caldera", "Tierra Amarilla", "Chañaral", "Diego de Almagro", "Vallenar", "Alto del Carmen", "Freirina", "Huasco"]
-	},
-		{
-			"NombreRegion": "Coquimbo",
-			"comunas": ["La Serena", "Coquimbo", "Andacollo", "La Higuera", "Paiguano", "Vicuña", "Illapel", "Canela", "Los Vilos", "Salamanca", "Ovalle", "Combarbalá", "Monte Patria", "Punitaqui", "Río Hurtado"]
-	},
-		{
-			"NombreRegion": "Valparaíso",
-			"comunas": ["Valparaíso", "Casablanca", "Concón", "Juan Fernández", "Puchuncaví", "Quintero", "Viña del Mar", "Isla de Pascua", "Los Andes", "Calle Larga", "Rinconada", "San Esteban", "La Ligua", "Cabildo", "Papudo", "Petorca", "Zapallar", "Quillota", "Calera", "Hijuelas", "La Cruz", "Nogales", "San Antonio", "Algarrobo", "Cartagena", "El Quisco", "El Tabo", "Santo Domingo", "San Felipe", "Catemu", "Llaillay", "Panquehue", "Putaendo", "Santa María", "Quilpué", "Limache", "Olmué", "Villa Alemana"]
-	},
-		{
-			"NombreRegion": "Región del Libertador Gral. Bernardo O’Higgins",
-			"comunas": ["Rancagua", "Codegua", "Coinco", "Coltauco", "Doñihue", "Graneros", "Las Cabras", "Machalí", "Malloa", "Mostazal", "Olivar", "Peumo", "Pichidegua", "Quinta de Tilcoco", "Rengo", "Requínoa", "San Vicente", "Pichilemu", "La Estrella", "Litueche", "Marchihue", "Navidad", "Paredones", "San Fernando", "Chépica", "Chimbarongo", "Lolol", "Nancagua", "Palmilla", "Peralillo", "Placilla", "Pumanque", "Santa Cruz"]
-	},
-		{
-			"NombreRegion": "Región del Maule",
-			"comunas": ["Talca", "ConsVtución", "Curepto", "Empedrado", "Maule", "Pelarco", "Pencahue", "Río Claro", "San Clemente", "San Rafael", "Cauquenes", "Chanco", "Pelluhue", "Curicó", "Hualañé", "Licantén", "Molina", "Rauco", "Romeral", "Sagrada Familia", "Teno", "Vichuquén", "Linares", "Colbún", "Longaví", "Parral", "ReVro", "San Javier", "Villa Alegre", "Yerbas Buenas"]
-	},
-		{
-			"NombreRegion": "Región del Biobío",
-			"comunas": ["Concepción", "Coronel", "Chiguayante", "Florida", "Hualqui", "Lota", "Penco", "San Pedro de la Paz", "Santa Juana", "Talcahuano", "Tomé", "Hualpén", "Lebu", "Arauco", "Cañete", "Contulmo", "Curanilahue", "Los Álamos", "Tirúa", "Los Ángeles", "Antuco", "Cabrero", "Laja", "Mulchén", "Nacimiento", "Negrete", "Quilaco", "Quilleco", "San Rosendo", "Santa Bárbara", "Tucapel", "Yumbel", "Alto Biobío", "Chillán", "Bulnes", "Cobquecura", "Coelemu", "Coihueco", "Chillán Viejo", "El Carmen", "Ninhue", "Ñiquén", "Pemuco", "Pinto", "Portezuelo", "Quillón", "Quirihue", "Ránquil", "San Carlos", "San Fabián", "San Ignacio", "San Nicolás", "Treguaco", "Yungay"]
-	},
-		{
-			"NombreRegion": "Región de la Araucanía",
-			"comunas": ["Temuco", "Carahue", "Cunco", "Curarrehue", "Freire", "Galvarino", "Gorbea", "Lautaro", "Loncoche", "Melipeuco", "Nueva Imperial", "Padre las Casas", "Perquenco", "Pitrufquén", "Pucón", "Saavedra", "Teodoro Schmidt", "Toltén", "Vilcún", "Villarrica", "Cholchol", "Angol", "Collipulli", "Curacautín", "Ercilla", "Lonquimay", "Los Sauces", "Lumaco", "Purén", "Renaico", "Traiguén", "Victoria", ]
-	},
-		{
-			"NombreRegion": "Región de Los Ríos",
-			"comunas": ["Valdivia", "Corral", "Lanco", "Los Lagos", "Máfil", "Mariquina", "Paillaco", "Panguipulli", "La Unión", "Futrono", "Lago Ranco", "Río Bueno"]
-	},
-		{
-			"NombreRegion": "Región de Los Lagos",
-			"comunas": ["Puerto Montt", "Calbuco", "Cochamó", "Fresia", "FruVllar", "Los Muermos", "Llanquihue", "Maullín", "Puerto Varas", "Castro", "Ancud", "Chonchi", "Curaco de Vélez", "Dalcahue", "Puqueldón", "Queilén", "Quellón", "Quemchi", "Quinchao", "Osorno", "Puerto Octay", "Purranque", "Puyehue", "Río Negro", "San Juan de la Costa", "San Pablo", "Chaitén", "Futaleufú", "Hualaihué", "Palena"]
-	},
-		{
-			"NombreRegion": "Región Aisén del Gral. Carlos Ibáñez del Campo",
-			"comunas": ["Coihaique", "Lago Verde", "Aisén", "Cisnes", "Guaitecas", "Cochrane", "O’Higgins", "Tortel", "Chile Chico", "Río Ibáñez"]
-	},
-		{
-			"NombreRegion": "Región de Magallanes y de la AntárVca Chilena",
-			"comunas": ["Punta Arenas", "Laguna Blanca", "Río Verde", "San Gregorio", "Cabo de Hornos (Ex Navarino)", "AntárVca", "Porvenir", "Primavera", "Timaukel", "Natales", "Torres del Paine"]
-	},
-		{
-			"NombreRegion": "Región Metropolitana de Santiago",
-			"comunas": ["Cerrillos", "Cerro Navia", "Conchalí", "El Bosque", "Estación Central", "Huechuraba", "Independencia", "La Cisterna", "La Florida", "La Granja", "La Pintana", "La Reina", "Las Condes", "Lo Barnechea", "Lo Espejo", "Lo Prado", "Macul", "Maipú", "Ñuñoa", "Pedro Aguirre Cerda", "Peñalolén", "Providencia", "Pudahuel", "Quilicura", "Quinta Normal", "Recoleta", "Renca", "San Joaquín", "San Miguel", "San Ramón", "Vitacura", "Puente Alto", "Pirque", "San José de Maipo", "Colina", "Lampa", "TilVl", "San Bernardo", "Buin", "Calera de Tango", "Paine", "Melipilla", "Alhué", "Curacaví", "María Pinto", "San Pedro", "Talagante", "El Monte", "Isla de Maipo", "Padre Hurtado", "Peñaflor"]
-	}]
-}
+// // Variables globales para almacenar datos
+// let regiones = [];
+// let provincias = [];
+// let comunas = [];
 
-//DEFINIMOS LAS VARIABLES DEL FORMULARIO
-let regiones = document.querySelector('#regiones');
-let comunas = document.querySelector('#comunas');
-let i = 0;
-//SACAMOS LAS REGIONES DEL OBJETO RegionesYcomunas
-RegionesYcomunas.regiones.forEach( nomRegion => {
-    let region = document.createElement('option');
-    region.textContent = nomRegion.NombreRegion;
-    region.value = i;
-    regiones.appendChild(region);
-    i++;
-});
-//ESCUCHAMOS EL CAMBIO EN LAS OPCIONES DE REGION
-regiones.addEventListener('change', e => {
-    listaComunas(e.target.value);
-});
-//  RECIBIMOS EL VALOR DE LA REGION Y GUARDAMOS LAS COMUNAS
-let x = 0;
-function listaComunas(e){
-    limpiarComunas();
-    RegionesYcomunas.regiones[e].comunas.forEach( nomComuna => {
-        let comuna = document.createElement('option');
-        comuna.textContent = nomComuna;
-        comuna.value = x;
-        comunas.appendChild(comuna);
-        x++;
-    });
-}
-// LIMPIAMOS EL OPTION DE LAS COMUNAS
-function limpiarComunas(){
-    while(comunas.firstChild){
-        comunas.removeChild(comunas.firstChild);
-    }
-}
+// // Elementos del formulario
+// let selectRegiones = document.getElementById('regiones');
+// let selectProvincias = document.getElementById('provincias');
+// let selectComunas = document.getElementById('comunas');
+
+// // Función para cargar las regiones desde la API
+// async function cargarRegiones() {
+// 	try {
+// 			const response = await fetch('http://127.0.0.1:8000/api/compras/region');
+// 			if (!response.ok) {
+// 					throw new Error('No se pudo cargar las regiones');
+// 			}
+// 			const data = await response.json();
+// 			regiones = data.regiones; // Suponiendo que la API devuelve un objeto con un array de regiones
+// 			llenarSelectRegiones();
+// 	} catch (error) {
+// 			console.error('Error al cargar regiones:', error.message);
+// 	}
+// }
+
+// // Función para llenar el select de regiones
+// function llenarSelectRegiones() {
+// 	regiones.forEach((region, index) => {
+// 			let option = document.createElement('option');
+// 			option.textContent = region.NombreRegion;
+// 			option.value = index;
+// 			selectRegiones.appendChild(option);
+// 	});
+// }

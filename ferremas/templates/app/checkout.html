@@ -47,6 +47,8 @@
         </li>
       </ul>
       <br>
+
+
       <div id="formulario-retiro" style="display: none;">
         <!-- Contenido del formulario de retiro -->
         <h4>Formulario de Retiro en Tienda</h4>
@@ -58,6 +60,8 @@
         </form>
         <br>
       </div>
+
+      
       <div id="formulario-despacho" style="display: none;">
         <!-- Contenido del formulario de despacho -->
         <div class="card">
@@ -65,7 +69,28 @@
             <h5>Agrega tu dirección</h5>
           </div>
           <div class="card-body">
-            <form method="post" id="despacho-form">
+            {% if direcciones %}
+            {% for d in direcciones %}
+            <div class="alert alert-primary" role="alert">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="{{ d.id }}" id="flexCheckChecked">
+                <label class="form-check-label" for="flexCheckChecked">
+                  {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{ d.comuna.provincia.region.nom_region }}
+                </label>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+              No tienes direcciones registradas
+            </div>
+            {% endif %}
+            <form method="POST" id="despacho-form">
+              
+              
+              {% csrf_token %}
+
+
               <div class="row">
                 <div class="col-12">
                   <div class="mb-3">
@@ -73,7 +98,7 @@
                       <strong>Buscar dirección</strong>
                     </label>
                     <input type="text" class="form-control form-control-sm" id="direccion"
-                      placeholder="Ingresa tu dirección" onchange="buscarDireccion()" name="buscarDireccion">
+                      placeholder="Ingresa tu dirección"  name="buscarDireccion">
                   </div>
                 </div>
               </div>
@@ -103,8 +128,21 @@
                     <label for="regiones" class="form-label">
                       <strong>Región</strong>
                     </label>
-                    <select class="form-select" id="regiones" name="region" required>
-                      <option value="">Seleccione una región</option>
+                   
+                    <select class="form-select form-select-sm" id="regiones" name="region" required>
+                      <option value="">Seleccione una Región</option>
+                      {% for r in regiones %}
+                      <option value="{{r.id}}">{{r.nom_region}}</option>
+                      {% endfor %}
+                    </select>
+                    
+                  </div>
+                  <div class="mb-3">
+                    <label for="provincias" class="form-label">
+                      <strong>Provincia</strong>
+                    </label>
+                    <select class="form-select form-select-sm" id="provincias" name="provincia" required>
+                      <option value="">Seleccione una Provincia</option>
                       <option value=""> - </option>
                     </select>
                   </div>
@@ -112,7 +150,8 @@
                     <label for="comunas" class="form-label">
                       <strong>Comuna</strong>
                     </label>
-                    <select class="form-select" id="comunas" name="comuna" required>
+                    <select class="form-select form-select-sm" id="comunas" name="comuna" required>
+                      <option value="">Seleccione una Comuna</option>
                       <option value=""> - </option>
                     </select>
                   </div>
@@ -124,7 +163,7 @@
                 <div class="row mt-3">
                   <div class="col-12">
                     <div class="d-grid">
-                      <a class="btn btn-success btn-sm" href="#">Guardar Direccion</a>
+                      <button type="submit" class="btn btn-success btn-sm">Guardar Dirección</button>
                     </div>
                   </div>
                 </div>
@@ -146,6 +185,10 @@
 
 {% endblock %}
 
+
+
+
+
 {% block js %}
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -154,11 +197,22 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
   integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
-<!-- Ubicación -->
+<!-- region, provincia, comuna -->
 <script src="{% static 'app/js/ubicacion.js' %}"></script>
+<!-- formularios -->
 <script src="{% static 'app/js/carrito.js' %}"></script>
+<!-- google maps -->
+<script>
+      document.addEventListener("DOMContentLoaded", function() {
+      const inputDireccion = document.getElementById('direccion');
+      inputDireccion.addEventListener('change', buscarDireccion);
+    });
+</script>
 <script async
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc&libraries=places&callback=initMap"></script>
 <script src="{% static 'app/js/funcionesGoogleMaps.js' %}"></script>
+<!-- validaciones -->
 <script src="{% static 'app/js/gestionCheckout.js' %}"></script>
+<!-- option select de region, provincia y comuna -->
+<script src="{% static 'app/js/regiones.js' %}"></script>
 {% endblock %}

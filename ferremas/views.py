@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomUserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -49,8 +50,52 @@ def detalle_producto(request, id):
     
 @login_required
 def checkout(request):
-    context = {}
-    return render(request, 'app/checkout.html')
+    try:
+        user_id = request.user.id  # Obtener el ID del usuario logueado
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
+        response.raise_for_status()
+        direcciones_usuario = response.json()
+        data = {
+            'direcciones': direcciones_usuario
+        }
+        return render(request, 'app/checkout.html', data)
+    except Exception as e:
+        # Si ocurre un error, puedes devolver un mensaje de error o manejarlo de otra manera
+        data = {
+            'error': 'No tienes direcciones registradas...'
+        }
+        return render(request, 'app/checkout.html', data)
+    
+@login_required
+def agregar_direccion(request):
+    if request.method == 'POST':
+        user_id = request.user.id
+        direccion = request.POST.get('dir')
+        num_direccion = request.POST.get('numero')
+        descripcion = request.POST.get('descripcion')
+        comuna = request.POST.get('comuna')
+
+        # Agrega mensajes de depuración para verificar los datos
+        print(f'Datos recibidos: {direccion}, {num_direccion}, {descripcion}, {comuna}')
+
+        payload = {
+            'user': user_id,
+            'direccion': direccion,
+            'num_direccion': num_direccion,
+            'descripcion': descripcion,
+            'comuna': comuna
+        }
+
+        try:
+            response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/agregar-direccion/', json=payload)
+            response.raise_for_status()
+            print(f'Respuesta de la API: {response.json()}')
+            return redirect('checkout')
+        except requests.exceptions.RequestException as e:
+            print(f'Error al enviar la solicitud: {e}')
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    return redirect('home')
 
 
 def categoria(request, id):

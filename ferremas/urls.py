@@ -14,4 +14,5 @@ urlpatterns = [
    path('categoria/<str:id>', views.categoria, name='categoria'),
    path('marca/<str:id>', views.marca, name='marca'),
    path('registro/', views.registro, name='registro'),
+   path('agregar-direccion/', views.agregar_direccion, name='agregar_direccion'),
 ]

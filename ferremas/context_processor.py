@@ -32,6 +32,17 @@ def marcas_processor(request):
         print(f'Error al obtener marcas: {e}')
         return {'marcas': []}
     
+def regiones(request):
+    try:
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/region')
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        regiones = response.json()
+        return {'regiones': regiones}
+    except requests.RequestException as e:
+        print(f'Error al obtener regiones: {e}')
+        return {'regiones': []}
+
+    
 def get_dollar(request):
     try:
         reponse = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value')

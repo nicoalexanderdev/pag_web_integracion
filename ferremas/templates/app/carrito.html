@@ -16,12 +16,12 @@
     <img class="img-fluid w-100" src="{{ value.image_url }}" alt="imagen-producto">
   </div>
   <div class="col-6">
-    <a href="#" class="btn btn-default" style="font-size: 0.5rem;">
+    <a href="#" class="btn btn-default" style="font-size: 1rem;">
       <strong>{{ value.marca }}</strong>
     </a>
-    <p style="font-size: 0.5rem;">{{ value.nombre }}</p>
-    <p style="font-size: 0.5rem;">ID: {{ value.producto_id }}</p>
-    <p style="font-size: 0.5rem;">${{ value.acumulado | intcomma }}</p>
+    <p style="font-size: 1rem;">{{ value.nombre }}</p>
+    <p style="font-size: 1rem;">ID: {{ value.producto_id }}</p>
+    <p style="font-size: 1rem;">${{ value.acumulado | intcomma }}</p>
 
     <div class="btn-group btn-group-sm mb-3" role="group">
       <a href="{% url 'agregar-carrito' value.producto_id %}" type="button" class="btn btn-outline-secondary">+</a>
