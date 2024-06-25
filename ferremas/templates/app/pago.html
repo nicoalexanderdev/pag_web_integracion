@@ -1,0 +1,25 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}
+<title>Pago</title>
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <br><br>
+  <div class="row">
+    <div class="col-12 col-md-7">
+
+    </div>
+    <div class="col-12 col-md-5">
+      {% include 'app/carrito.html' %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

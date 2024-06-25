@@ -12,8 +12,41 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
+from datetime import datetime, timedelta
+import locale
+locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 # Create your views here.
+@login_required
+def pago(request):
+    carrito = Carrito(request)
+    detalles_entrega = request.session.get('detalles_entrega', {})
+    print("Detalles de entrega:", detalles_entrega)
+    print("Contenido del carrito:", carrito.carrito)
+    return render(request, 'app/pago.html')	
+
+@login_required
+def agregar_detalles_entrega(request):
+    if request.method == 'POST':
+        tipo_entrega = request.POST.get('tipo_entrega')
+        direccion = request.POST.get('direccion')
+        region_id = request.POST.get('region_id')
+
+        print(f"Tipo de entrega: {tipo_entrega}, Dirección: {direccion}, Región ID: {region_id}")
+
+        if tipo_entrega and direccion and region_id:
+            request.session['detalles_entrega'] = {
+                'tipo_entrega': tipo_entrega,
+                'direccion': direccion,
+                'region_id': region_id,
+                'fecha_entrega': (datetime.now() + timedelta(days=5)).strftime('%d de %B de %Y'),
+                'costo_despacho': 3990 if region_id == '7' else 5990
+            }
+            request.session.modified = True
+            return redirect('pago')
+        else:
+            messages.error(request, 'Error al agregar detalles de la entrega')
+            return redirect('checkout')  
 
 
 def index(request):
@@ -50,6 +83,8 @@ def detalle_producto(request, id):
     
 @login_required
 def checkout(request):
+    carrito = Carrito(request)
+    print("Contenido del carrito:", carrito.carrito)
     try:
         user_id = request.user.id  # Obtener el ID del usuario logueado
         response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
@@ -60,7 +95,6 @@ def checkout(request):
         }
         return render(request, 'app/checkout.html', data)
     except Exception as e:
-        # Si ocurre un error, puedes devolver un mensaje de error o manejarlo de otra manera
         data = {
             'error': 'No tienes direcciones registradas...'
         }

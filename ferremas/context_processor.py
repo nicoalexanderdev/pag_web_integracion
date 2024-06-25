@@ -5,10 +5,11 @@ from django.conf import settings
 def total_carrito(request):
     total = 0
     cantidadTotal = 0 
-    if request:
-        if 'carrito' in request.session.keys():
-            for key, value in request.session['carrito'].items():
+    if 'carrito' in request.session.keys():
+        for key, value in request.session['carrito'].items():
+            if 'acumulado' in value:  # Verifica si 'acumulado' está presente en el diccionario
                 total += int(value['acumulado'])
+            if 'cantidad' in value:   # Verifica si 'cantidad' está presente en el diccionario
                 cantidadTotal += int(value['cantidad'])
     return {'total_carrito': total, 'cantidad_total': cantidadTotal}
 

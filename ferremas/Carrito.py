@@ -13,22 +13,23 @@ class Carrito:
            self.carrito = carrito 
 
     def agregar(self, producto):
-        id = str(producto['id'])
+        id = str(producto.get('id'))  # Usamos get para manejar casos donde 'id' podría no estar presente
 
-        if id not in self.carrito.keys():
+        if id and id not in self.carrito.keys():  # Verificamos que 'id' no esté vacío y no esté ya en el carrito
             self.carrito[id] = {
-             'producto_id'    : producto['id'],
-             'nombre'     : producto['nombre'],
-             'marca'  : producto['marca_nombre'], 
-             'acumulado'  : producto['precio'],
-             'cantidad'   : 1,
-             'image_url': producto['image_url'],
-             'marca_id': producto['marca']
+                'producto_id': producto['id'],
+                'nombre': producto['nombre'],
+                'marca': producto['marca_nombre'],
+                'acumulado': producto['precio'],
+                'cantidad': 1,
+                'image_url': producto['image_url'],
+                'marca_id': producto['marca']
             }
-        else:
+            self.guardar_carrito()
+        elif id in self.carrito.keys():
             self.carrito[id]['cantidad'] += 1
             self.carrito[id]['acumulado'] += producto['precio']
-        self.guardar_carrito()
+            self.guardar_carrito()
        
     def guardar_carrito(self):
         self.session['carrito'] = self.carrito

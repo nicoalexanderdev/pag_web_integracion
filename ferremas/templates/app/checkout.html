@@ -30,7 +30,8 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item align-items-center">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro" onchange="continuar()">
+          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro"
+            onchange="continuar()">
           <label class="form-check-label" for="retiro">
             <strong>Retiro en tienda</strong>
           </label>
@@ -40,7 +41,8 @@
         </li>
 
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho" onchange="continuar()">
+          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho"
+            onchange="continuar()">
           <label class="form-check-label" for="despcho">
             <strong>Despacho a Domicilio</strong>
           </label>
@@ -61,21 +63,28 @@
         <br>
       </div>
 
-      
+
       <div id="formulario-despacho" style="display: none;">
         <!-- Contenido del formulario de despacho -->
         <div class="card">
+
+
           <div class="card-header">
             <h5>Agrega tu dirección</h5>
           </div>
+
+
           <div class="card-body">
+
+
+            <!-- direcciones registradas del usuario -->
             {% if direcciones %}
             {% for d in direcciones %}
             <div class="alert alert-primary" role="alert">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="{{ d.id }}" id="flexCheckChecked">
-                <label class="form-check-label" for="flexCheckChecked">
-                  {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{ d.comuna.provincia.region.nom_region }}
+                <input class="form-check-input" type="radio" name="direccion_envio" dataid="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
+                <label class="form-check-label" for="direccion{{ d.id }}">
+                  {{ d.comuna.provincia.region.id }} {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{d.comuna.provincia.region.nom_region }}
                 </label>
               </div>
             </div>
@@ -85,9 +94,11 @@
               No tienes direcciones registradas
             </div>
             {% endif %}
-            <form method="POST" id="despacho-form">
-              
-              
+
+            <!-- Formulario para agregar nueva direccion -->
+            <form method="POST" action="{% url 'agregar_direccion' %}" id="despacho-form">
+
+
               {% csrf_token %}
 
 
@@ -98,7 +109,7 @@
                       <strong>Buscar dirección</strong>
                     </label>
                     <input type="text" class="form-control form-control-sm" id="direccion"
-                      placeholder="Ingresa tu dirección"  name="buscarDireccion">
+                      placeholder="Ingresa tu dirección" name="buscarDireccion">
                   </div>
                 </div>
               </div>
@@ -108,7 +119,8 @@
                     <label for="dir" class="form-label">
                       <strong>Dirección</strong>
                     </label>
-                    <input type="text" class="form-control form-control-sm" id="dir" placeholder="autocomplete..." name="dir">
+                    <input type="text" class="form-control form-control-sm" id="dir" placeholder="autocomplete..."
+                      name="dir">
                   </div>
                   <div class="mb-3">
                     <label for="numero" class="form-label">
@@ -128,14 +140,14 @@
                     <label for="regiones" class="form-label">
                       <strong>Región</strong>
                     </label>
-                   
+
                     <select class="form-select form-select-sm" id="regiones" name="region" required>
                       <option value="">Seleccione una Región</option>
                       {% for r in regiones %}
                       <option value="{{r.id}}">{{r.nom_region}}</option>
                       {% endfor %}
                     </select>
-                    
+
                   </div>
                   <div class="mb-3">
                     <label for="provincias" class="form-label">
@@ -172,7 +184,38 @@
           </div>
         </div>
         <br>
+        <hr>
+        <!-- tarjeta costo de despacho -->
+        <div class="card">
+          <div class="card-body">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+              <label class="form-check-label" for="flexRadioDefault2">
+                <strong>Costo del despacho</strong>
+              </label>
+              <span class="badge text-bg-primary" id="costo-envio">
+                <small>Costo $</small>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- Tarjeta de fecha de entrega -->
+        <div class="card">
+          <div class="card-body">
+              <i class="bi bi-calendar-date"></i>
+              <strong>Fecha de entrega</strong> 
+              <span id="fecha-entrega"> </span>
+          </div>
+        </div>
+        <br>
       </div>
+      <form id="detalle-entrega-form" method="post" action="{% url 'agregar_detalles_entrega' %}">
+        {% csrf_token %}
+        <input type="hidden" name="tipo_entrega" value="Despacho">
+        <input type="hidden" name="direccion" id="direccion-id" value="">  
+        <input type="hidden" name="region_id" id="region-id" value="">
+        <button type="submit" class="btn btn-success btn-sm" id="continuar-pago" style="display: none;">Continuar al pago</button>
+      </form> 
     </div>
 
     <!-- carrito -->
@@ -203,10 +246,10 @@
 <script src="{% static 'app/js/carrito.js' %}"></script>
 <!-- google maps -->
 <script>
-      document.addEventListener("DOMContentLoaded", function() {
-      const inputDireccion = document.getElementById('direccion');
-      inputDireccion.addEventListener('change', buscarDireccion);
-    });
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputDireccion = document.getElementById('direccion');
+    inputDireccion.addEventListener('change', buscarDireccion);
+  });
 </script>
 <script async
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc&libraries=places&callback=initMap"></script>
@@ -215,4 +258,25 @@
 <script src="{% static 'app/js/gestionCheckout.js' %}"></script>
 <!-- option select de region, provincia y comuna -->
 <script src="{% static 'app/js/regiones.js' %}"></script>
+<!-- costo de envio despacho y fecha de entrega -->
+<script src="{% static 'app/js/costoFechaEnvio.js' %}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Obtener todos los radio buttons de direcciones
+    const radioDirecciones = document.querySelectorAll('input[name="direccion_envio"]');
+
+    // Iterar sobre cada radio button para añadir un listener
+    radioDirecciones.forEach(function(radio) {
+      radio.addEventListener('change', function() {
+
+        const direccion = this.getAttribute('value');
+        const regionId = this.getAttribute('dataid');
+        
+        // Actualizar el valor de los campos ocultos en el formulario de detalles de entrega
+        document.getElementById('direccion-id').value = direccion;
+        document.getElementById('region-id').value = regionId;
+      });
+    });
+  });
+</script>
 {% endblock %}
