@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseServerError
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from ferremas.Carrito import Carrito
@@ -59,27 +59,28 @@ def index(request):
         }
         return render(request, 'app/home.html', data)
     except requests.exceptions.RequestException as e:
-        return JsonResponse({'error': 'Error al obtener datos de la API: {}'.format(str(e))}, status=500)
+        return HttpResponseServerError(json.dumps({'error': 'Error al obtener datos de la API: {}'.format(str(e))}), content_type='application/json')
 
 
 def detalle_producto(request, id):
 
-    response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}')
+    try:
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}')
 
-    if response.status_code == 200:
+        if response.status_code == 200:
+            producto = response.json()
+            data = {'producto': producto}
+            return render(request, 'app/detalle-producto.html', data)
+        else:
+            messages.error(request, 'Error al obtener detalles del producto')
+            return redirect('home')
 
-        producto = response.json()
-
-        data = {
-            'producto': producto,
-        }
-
-        return render(request, 'app/detalle-producto.html', data)
-    else:
-        # Si la solicitud no fue exitosa, redirigir a una página de error
-        # O mostrar un mensaje de error al usuario
-        return HttpResponseRedirect(reverse('home'))
+    except requests.RequestException as e:
+        messages.error(request, f'Error de conexión: {str(e)}')
+        return redirect('home')
+    except Exception as e:
+        messages.error(request, f'Error inesperado: {str(e)}')
+        return redirect('home')
     
 @login_required
 def checkout(request):

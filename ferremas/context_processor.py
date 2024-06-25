@@ -5,7 +5,7 @@ from django.conf import settings
 def total_carrito(request):
     total = 0
     cantidadTotal = 0 
-    if 'carrito' in request.session.keys():
+    if hasattr(request, 'session') and'carrito' in request.session.keys():
         for key, value in request.session['carrito'].items():
             if 'acumulado' in value:  # Verifica si 'acumulado' está presente en el diccionario
                 total += int(value['acumulado'])
@@ -46,11 +46,16 @@ def regiones(request):
     
 def get_dollar(request):
     try:
-        reponse = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value')
-        reponse.raise_for_status()
-        valor_dolar = reponse.json()
-        return {'valor_dolar': valor_dolar['value']}
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value/')
+        response.raise_for_status()
+        valor_dolar = response.json()
+
+        if 'value' in valor_dolar:
+            return {'valor_dolar': float(valor_dolar['value'])}  
+        else:
+            return {'valor_dolar': None}
+
     except requests.RequestException as e:
-        print(f'error al obtener valor del dolar actualizado: {e}')
-        return {'valor_dolar': []}
+        print(f'Error al obtener valor del dolar actualizado: {e}')
+        return {'valor_dolar': None} 
     
