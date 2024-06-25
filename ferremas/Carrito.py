@@ -19,11 +19,13 @@ class Carrito:
             self.carrito[id] = {
                 'producto_id': producto['id'],
                 'nombre': producto['nombre'],
-                'marca': producto['marca_nombre'],
+                'nombre_marca': producto['marca']['nom_marca'],
+                'marca_id': producto['marca']['id'],
                 'acumulado': producto['precio'],
                 'cantidad': 1,
                 'image_url': producto['image_url'],
-                'marca_id': producto['marca']
+                'nombre_categoria': producto['categoria']['nom_categoria'],
+                'categoria_id': producto['categoria']['id'],
             }
             self.guardar_carrito()
         elif id in self.carrito.keys():

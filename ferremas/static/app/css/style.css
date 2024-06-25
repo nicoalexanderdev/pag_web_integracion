@@ -1,8 +1,25 @@
+/* Estilo general para el cuerpo y el contenedor principal */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
 .footer {
-    width: 100%;
     background-color: #afcec6; 
     padding: 20px 0;
-    border-top: 1px solid rgb(189, 189, 189);
+    width: 100%;
+    height: 100%;
+    margin-top: auto;
 }
 
 .form-control.error {

@@ -6,28 +6,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const radios = document.querySelectorAll('input[name="direccion_envio"]');
     let costoEnvio = 0;
     let direccionSeleccionada = false;
+
     radios.forEach((radio) => {
       if (radio.checked) {
         direccionSeleccionada = true;
-        if (radio.dataid == 7) {
+        const dataid = radio.getAttribute('data-id');
+        if (dataid === '7') {
           costoEnvio = 3990;
-        }
-        else {
-            costoEnvio = 5990
+        } else {
+          costoEnvio = 5990;
         }
       }
     });
+
     document.getElementById("costo-envio").innerHTML =
-      "<small>Costo $" + costoEnvio.toLocaleString() + "</small>";
-      botonContinuar.style.display = direccionSeleccionada ? 'block' : 'none';
+      "Costo $" + costoEnvio.toLocaleString();
+    botonContinuar.style.display = direccionSeleccionada ? 'block' : 'none';
   }
 
   // Añadir event listeners a los radio buttons
-  document
-    .querySelectorAll('input[name="direccion_envio"]')
-    .forEach((radio) => {
-      radio.addEventListener("change", actualizarCostoEnvio);
-    });
+  document.querySelectorAll('input[name="direccion_envio"]').forEach((radio) => {
+    radio.addEventListener("change", actualizarCostoEnvio);
+  });
 
   // Llamar a la función una vez para establecer el costo inicial
   actualizarCostoEnvio();

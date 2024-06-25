@@ -82,9 +82,9 @@
             {% for d in direcciones %}
             <div class="alert alert-primary" role="alert">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="direccion_envio" dataid="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
+                <input class="form-check-input" type="radio" name="direccion_envio" data-id="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
                 <label class="form-check-label" for="direccion{{ d.id }}">
-                  {{ d.comuna.provincia.region.id }} {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{d.comuna.provincia.region.nom_region }}
+                  {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{d.comuna.provincia.region.nom_region }}
                 </label>
               </div>
             </div>
@@ -194,7 +194,7 @@
                 <strong>Costo del despacho</strong>
               </label>
               <span class="badge text-bg-primary" id="costo-envio">
-                <small>Costo $</small>
+                Costo $
               </span>
             </div>
           </div>
@@ -270,7 +270,7 @@
       radio.addEventListener('change', function() {
 
         const direccion = this.getAttribute('value');
-        const regionId = this.getAttribute('dataid');
+        const regionId = this.getAttribute('data-id');
         
         // Actualizar el valor de los campos ocultos en el formulario de detalles de entrega
         document.getElementById('direccion-id').value = direccion;

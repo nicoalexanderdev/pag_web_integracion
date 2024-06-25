@@ -16,8 +16,11 @@
     <img class="img-fluid w-100" src="{{ value.image_url }}" alt="imagen-producto">
   </div>
   <div class="col-6">
-    <a href="#" class="btn btn-default" style="font-size: 1rem;">
-      <strong>{{ value.marca }}</strong>
+    <a href="{% url 'marca' value.marca_id %}" class="btn btn-default" style="font-size: 1rem;">
+      <strong>{{ value.nombre_marca }}</strong>
+    </a>
+    <a href="{% url 'categoria' value.categoria_id %}" class="btn btn-default" style="font-size: 1rem;">
+      <strong>{{ value.nombre_categoria }}</strong>
     </a>
     <p style="font-size: 1rem;">{{ value.nombre }}</p>
     <p style="font-size: 1rem;">ID: {{ value.producto_id }}</p>
@@ -89,7 +92,10 @@
   <hr>
   <div class="d-grid gap-2">
     <a href="{% url 'limpiar-carrito' %}" class="btn btn-danger">Limpiar</a>
+    {% if request.path != '/checkout/' and request.path != '/pago/' %}
     <a href="{% url 'checkout' %}" class="btn btn-success">Ir al carrito</a>
+    {% endif %}
+    
   </div>
 
 </div>

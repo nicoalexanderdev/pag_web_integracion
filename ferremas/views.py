@@ -213,7 +213,6 @@ def agregar_carrito(request, id):
         producto_data = response.json()
         carrito.agregar(producto_data)
         messages.success(request, 'Producto agregado al carrito')
-        # Redirigir de vuelta a la página desde donde se envió la solicitud
         referer_url = request.META.get('HTTP_REFERER')
         if referer_url:
             return HttpResponseRedirect(referer_url)
@@ -232,7 +231,12 @@ def eliminar_carrito(request, id):
     if response.status_code == 200:
         producto_data = response.json()
         carrito.eliminar(producto_data['id'])
-        return render(request, 'app/checkout.html')
+        messages.success(request, 'Producto eliminado correctamente')
+        referer_url = request.META.get('HTTP_REFERER')
+        if referer_url:
+            return HttpResponseRedirect(referer_url)
+        else:
+            return redirect('home')  
     else:
         # Si la solicitud a la API falla, redirige a una página de error o muestra un mensaje de error
         return HttpResponseRedirect(reverse('home'))
@@ -245,16 +249,23 @@ def restar_carrito(request, id):
     if response.status_code == 200:
         producto_data = response.json()
         carrito.restar(producto_data)
-        return render(request, 'app/checkout.html')
+        referer_url = request.META.get('HTTP_REFERER')
+        if referer_url:
+            return HttpResponseRedirect(referer_url)
+        else:
+            return redirect('home')  
     else:
-        # Si la solicitud a la API falla, redirige a una página de error o muestra un mensaje de error
         return HttpResponseRedirect(reverse('home'))
 
 
 def limpiar_carrito(request):
     carrito = Carrito(request)
-    carrito.limpiar()  # Llama al método limpiar directamente
-    return render(request, 'app/checkout.html')
+    carrito.limpiar()
+    referer_url = request.META.get('HTTP_REFERER')
+    if referer_url:
+        return HttpResponseRedirect(referer_url)
+    else:
+        return redirect('home')  
 
 
 
