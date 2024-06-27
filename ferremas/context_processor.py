@@ -5,13 +5,29 @@ from django.conf import settings
 def total_carrito(request):
     total = 0
     cantidadTotal = 0 
-    if hasattr(request, 'session') and'carrito' in request.session.keys():
+    costo_despacho = 0
+    
+    if hasattr(request, 'session') and 'carrito' in request.session.keys():
         for key, value in request.session['carrito'].items():
             if 'acumulado' in value:  # Verifica si 'acumulado' está presente en el diccionario
                 total += int(value['acumulado'])
             if 'cantidad' in value:   # Verifica si 'cantidad' está presente en el diccionario
                 cantidadTotal += int(value['cantidad'])
-    return {'total_carrito': total, 'cantidad_total': cantidadTotal}
+
+    if hasattr(request, 'session') and 'detalles_entrega' in request.session:
+        costo_despacho = request.session['detalles_entrega'].get('costo_despacho', 0)
+    
+    total_pesos_chilenos = total + costo_despacho
+
+    request.session['total_a_pagar'] = total_pesos_chilenos
+
+    return {
+        'total_carrito': total,
+        'cantidad_total': cantidadTotal,
+        'costo_despacho': costo_despacho,
+        'total_pesos_chilenos': total_pesos_chilenos
+    }
+
 
 def categorias_processor(request):
     try:

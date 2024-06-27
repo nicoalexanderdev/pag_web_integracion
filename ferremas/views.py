@@ -34,13 +34,20 @@ def agregar_detalles_entrega(request):
 
         print(f"Tipo de entrega: {tipo_entrega}, Dirección: {direccion}, Región ID: {region_id}")
 
-        if tipo_entrega and direccion and region_id:
+        if tipo_entrega == 'Retiro':
+            costo_despacho = 0
+        elif region_id == '7':
+            costo_despacho = 3990
+        else:
+            costo_despacho = 5990
+
+        if tipo_entrega and direccion:
             request.session['detalles_entrega'] = {
                 'tipo_entrega': tipo_entrega,
                 'direccion': direccion,
                 'region_id': region_id,
                 'fecha_entrega': (datetime.now() + timedelta(days=5)).strftime('%d de %B de %Y'),
-                'costo_despacho': 3990 if region_id == '7' else 5990
+                'costo_despacho': costo_despacho
             }
             request.session.modified = True
             return redirect('pago')
@@ -52,7 +59,7 @@ def agregar_detalles_entrega(request):
 def index(request):
     try:
         response = requests.get(f'http://{settings.API_BASE_URL}')
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status() 
         productos = response.json()
         data = {
             'productos': productos,
@@ -86,20 +93,43 @@ def detalle_producto(request, id):
 def checkout(request):
     carrito = Carrito(request)
     print("Contenido del carrito:", carrito.carrito)
+    
+    user_id = request.user.id 
+
     try:
-        user_id = request.user.id  # Obtener el ID del usuario logueado
+        # Obtener direcciones del usuario
         response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
         response.raise_for_status()
         direcciones_usuario = response.json()
+
+        # Obtener sucursales
+        response_sucursales = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
+        response_sucursales.raise_for_status()
+        sucursales = response_sucursales.json()
+
         data = {
-            'direcciones': direcciones_usuario
+            'direcciones': direcciones_usuario,
+            'sucursales': sucursales
         }
         return render(request, 'app/checkout.html', data)
+    
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+        data = {
+            'error': 'Hubo un problema con la solicitud HTTP.'
+        }
+    except requests.exceptions.RequestException as req_err:
+        print(f'Error occurred: {req_err}')
+        data = {
+            'error': 'No se pudo completar la solicitud. Por favor, intenta de nuevo más tarde.'
+        }
     except Exception as e:
+        print(f'Unexpected error occurred: {e}')
         data = {
-            'error': 'No tienes direcciones registradas...'
+            'error': 'Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.'
         }
-        return render(request, 'app/checkout.html', data)
+
+    return render(request, 'app/checkout.html', data)
     
 @login_required
 def agregar_direccion(request):
@@ -365,8 +395,16 @@ def transbank(request):
 
 @login_required
 def ir_a_pagar(request):
-    # Realizar la solicitud para crear la transacción en Transbank
-    response_data = transbank_create(request)
+    
+    total_a_pagar = request.session.get('total_a_pagar')
+
+    print('total a pagar:', total_a_pagar)
+
+    if total_a_pagar is None:
+        return JsonResponse({'error': 'No se encontró total_a_pagar en la sesión'}, status=500)
+
+
+    response_data = transbank_create(request, total_a_pagar)
     
     # verificamos recibir el token y la url
     if 'token' in response_data and 'url' in response_data:

@@ -10,7 +10,41 @@
   <br><br>
   <div class="row">
     <div class="col-12 col-md-7">
+      <form id="ir-a-pagar-form" method="post" action="{% url 'ir-a-pagar' %}">
 
+        {% csrf_token %}
+
+        <strong>Tipo de documento</strong>
+        <ul class="list-group">
+          <br>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="form-check">
+              <div class="ms-2 me-auto">
+                <input class="form-check-input" type="radio" name="tipo_documento" id="boleta" value="Boleta">
+                <div class="fw-bold">Boleta</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <br><br>
+        <strong>Selecciona medio de pago</strong>
+        <ul class="list-group">
+          <br>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="form-check d-flex justify-content-between align-items-center w-100">
+              <div class="d-flex align-items-center">
+                <input class="form-check-input me-2" type="radio" name="transbank" id="transbank" value="transbank">
+                <div class="fw-bold">Transbank</div>
+              </div>
+              <span><i class="bi bi-credit-card-fill"></i></span>
+            </div>
+          </li>
+        </ul>
+        <br><br>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-success">Ir a pagar</button>
+        </div>
+      </form>
     </div>
     <div class="col-12 col-md-5">
       {% include 'app/carrito.html' %}
@@ -21,5 +55,13 @@
 {% endblock %}
 
 {% block js %}
-
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+  integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
+<!-- validaciones pago -->
+<script src="{% static 'app/js/gestionPago.js' %}"></script>
 {% endblock %}

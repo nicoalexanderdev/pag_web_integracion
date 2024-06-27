@@ -27,15 +27,15 @@ def headers_request_transbank():
 
 
 @login_required
-def transbank_create(request):
+def transbank_create(request, total_a_pagar):
     # Obtener el carrito asociado al usuario
-    carrito = Carrito(request)
+    #carrito = Carrito(request)
     user = request.user
 
     # Crear orden de compra
     buy_order = f"BO-{random.randint(1000, 9999)}"
     session_id = str(user.id)
-    amount = sum(item['acumulado'] for item in carrito.carrito.values())
+    amount = total_a_pagar
     return_url = f"http://{settings.TRANSBANK_RETURN_URL}"
 
     data = {

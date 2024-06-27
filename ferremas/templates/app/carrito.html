@@ -24,7 +24,7 @@
     </a>
     <p style="font-size: 1rem;">{{ value.nombre }}</p>
     <p style="font-size: 1rem;">ID: {{ value.producto_id }}</p>
-    <p style="font-size: 1rem;">${{ value.acumulado | intcomma }}</p>
+    <p style="font-size: 1rem;">${{ value.acumulado }}</p>
 
     {% if value.producto_id %}
     <div class="btn-group btn-group-sm mb-3" role="group">
@@ -57,7 +57,7 @@
       </li>
       <li class="list-group-item d-flex justify-content-between">
         <span>Costo de despacho</span>
-        <span>${{ request.session.detalles_entrega.costo_despacho | intcomma }}</span>
+        <span>${{ request.session.detalles_entrega.costo_despacho }}</span>
       </li>
     </ul>
   </div>
@@ -75,16 +75,20 @@
   <ul>
     <br>
     <li class="list-group-item d-flex justify-content-between">
+      <span>Subtotal</span>
+      <span id="subtotal" data-value="{{ total_carrito }}">${{ total_carrito }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between">
       <span>Total en pesos chilenos</span>
-      <span id="total_carrito" data-value="{{ total_carrito }}">${{ total_carrito | intcomma }}</span>
+      <span id="total_a_pagar">${{ total_pesos_chilenos }}</span>
     </li>
     <li class="list-group-item d-flex justify-content-between">
       <span>Valor dolar actual</span>
-      <span id="valor_dolar" data-value="{{ valor_dolar }}">${{ valor_dolar | intcomma }}</span>
+      <span id="valor_dolar" data-value="{{ valor_dolar }}">${{ valor_dolar }}</span>
     </li>
     <li class="list-group-item d-flex justify-content-between">
       <span>Total en dolares</span>
-      <span>${% widthratio total_carrito valor_dolar 1 %}</span>
+      <span>${% widthratio total_pesos_chilenos valor_dolar 1 %}</span>
     </li>
 
   </ul>

@@ -30,7 +30,7 @@
       <br>
       <ul class="list-group">
         <li class="list-group-item align-items-center">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="retiro" id="retiro"
+          <input class="form-check-input me-1" type="radio" name="radios_tipo_entrega" value="Retiro" id="retiro"
             onchange="continuar()">
           <label class="form-check-label" for="retiro">
             <strong>Retiro en tienda</strong>
@@ -41,7 +41,7 @@
         </li>
 
         <li class="list-group-item">
-          <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="despacho" id="despacho"
+          <input class="form-check-input me-1" type="radio" name="radios_tipo_entrega" value="Despacho" id="despacho"
             onchange="continuar()">
           <label class="form-check-label" for="despcho">
             <strong>Despacho a Domicilio</strong>
@@ -52,14 +52,34 @@
 
 
       <div id="formulario-retiro" style="display: none;">
-        <!-- Contenido del formulario de retiro -->
-        <h4>Formulario de Retiro en Tienda</h4>
-        <form>
-          <!-- Campos del formulario de retiro -->
-          <!-- Por ejemplo: -->
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" name="nombre">
-        </form>
+        <div class="card">
+          <div class="card-header">
+            <h5>Selecciona una sucursal</h5>
+          </div>
+          <div class="card-body">
+            {% if sucursales %}
+            <ul class="list-group">
+              {% for s in sucursales %}
+              
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                  <div class="form-check">
+                  <div class="ms-2 me-auto">
+                    <input class="form-check-input" type="radio" name="sucursal" id="radio-sucursal" value="{{ s.nom_sucursal }}">
+                    <div class="fw-bold">{{ s.nom_sucursal }}</div>
+                    {{ s.direccion}}, {{ s.num_direccion }}, {{ s.comuna.nom_comuna }}
+                  </div>
+                </div> 
+                </li>
+                          
+              {% endfor %}
+            </ul>
+            {% else %}
+            <div class="alert alert-danger" role="alert">
+              Error en obtener las sucursales
+            </div>
+            {% endif %}
+          </div>
+        </div>
         <br>
       </div>
 
@@ -82,7 +102,7 @@
             {% for d in direcciones %}
             <div class="alert alert-primary" role="alert">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="direccion_envio" data-id="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
+                <input class="form-check-input" type="radio" name="direcciones_usuario" data-id="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
                 <label class="form-check-label" for="direccion{{ d.id }}">
                   {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{d.comuna.provincia.region.nom_region }}
                 </label>
@@ -211,8 +231,8 @@
       </div>
       <form id="detalle-entrega-form" method="post" action="{% url 'agregar_detalles_entrega' %}">
         {% csrf_token %}
-        <input type="hidden" name="tipo_entrega" value="Despacho">
-        <input type="hidden" name="direccion" id="direccion-id" value="">  
+        <input type="hidden" name="tipo_entrega" value="">
+        <input type="hidden" name="direccion" id="direccion-form" value="">  
         <input type="hidden" name="region_id" id="region-id" value="">
         <button type="submit" class="btn btn-success btn-sm" id="continuar-pago" style="display: none;">Continuar al pago</button>
       </form> 
@@ -240,10 +260,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
   integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.js"></script>
-<!-- region, provincia, comuna -->
-<script src="{% static 'app/js/ubicacion.js' %}"></script>
-<!-- formularios -->
-<script src="{% static 'app/js/carrito.js' %}"></script>
 <!-- google maps -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
@@ -258,25 +274,6 @@
 <script src="{% static 'app/js/gestionCheckout.js' %}"></script>
 <!-- option select de region, provincia y comuna -->
 <script src="{% static 'app/js/regiones.js' %}"></script>
-<!-- costo de envio despacho y fecha de entrega -->
-<script src="{% static 'app/js/costoFechaEnvio.js' %}"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Obtener todos los radio buttons de direcciones
-    const radioDirecciones = document.querySelectorAll('input[name="direccion_envio"]');
-
-    // Iterar sobre cada radio button para añadir un listener
-    radioDirecciones.forEach(function(radio) {
-      radio.addEventListener('change', function() {
-
-        const direccion = this.getAttribute('value');
-        const regionId = this.getAttribute('data-id');
-        
-        // Actualizar el valor de los campos ocultos en el formulario de detalles de entrega
-        document.getElementById('direccion-id').value = direccion;
-        document.getElementById('region-id').value = regionId;
-      });
-    });
-  });
-</script>
+<!-- funcionalidades del checkout -->
+<script src="{% static 'app/js/funcionesCheckout.js' %}"></script>
 {% endblock %}
