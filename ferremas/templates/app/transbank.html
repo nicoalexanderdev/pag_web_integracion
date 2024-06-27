@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% block title %}
-<title>Pagar</title>
+<title>Resultado pago</title>
 {% endblock %}
 
 
@@ -10,24 +10,172 @@
 <div class="container">
   <br><br><br>
   <div class="row">
-    <div class="col-12 col-md-6 offset-md-3">
-      <ul class="list-group">
-        <li class="list-group-item">  
-          <h1>Resultado de la Transacción</h1>
-        </li>
-        <li class="list-group-item">
-          <p><strong>Estado de la Transacción:</strong> {{ resultado }}</p>
-        </li>
-        <li class="list-group-item">
-          <p><strong>Código de Autorización:</strong> {{ codigo }}</p>
-        </li>
-        <li class="list-group-item">
-          <p><strong>Monto:</strong> ${{ monto | intcomma }}</p>
-        </li>
-      </ul>
-
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header text-bg-success">
+          <strong>Pedido</strong>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Dirección de envío</div>
+                </div>
+                <span>{{ request.session.detalles_entrega.direccion }}</span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Despacho</div>
+                </div>
+                <span>{{ request.session.detalles_entrega.fecha_entrega }}</span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Recibe</div>
+                </div>
+                <span>{{ user.first_name }} {{ user.last_name }}</span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Contacto</div>
+                </div>
+                <span>{{ user.email }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <div class="card">
+        <div class="card-header text-bg-success">
+          <strong>Información de pago</strong>
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Forma de pago</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Tipo Documento</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Orden de compra</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Estado</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Número de tarjeta</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Fecha de transacción</div>
+                </div>
+                <span></span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
+                  <div class="fw-bold">Código de Autorización</div>
+                </div>
+                <span>{{ codigo }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <div class="card">
+        <div class="card-header text-bg-success">
+          <strong>Productos</strong>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Producto(s)</th>
+                <th scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if request.session.carrito.items %}
+              {% for key, value in request.session.carrito.items %}
+              <tr>
+                <th scope="row">{{ value.cantidad }}</th>
+                <td>{{ value.nombre }}</td>
+                <td>{{ value.acumulado }}</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <div class="alert alert-danger text-center">
+                Sin Productos
+              </div>
+              {% endif %}
+            </tbody>
+          </table>
+          <br>
+          <ul>
+            <br>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Subtotal</span>
+              <span id="subtotal" data-value="{{ total_carrito }}">${{ total_carrito }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total en pesos chilenos</span>
+              <span id="total_a_pagar">${{ total_pesos_chilenos }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Valor dolar actual</span>
+              <span id="valor_dolar" data-value="{{ valor_dolar }}">${{ valor_dolar }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total en dolares</span>
+              <span>${% widthratio total_pesos_chilenos valor_dolar 1 %}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <br>
+      <hr>
+      <div class="d-grid gap-2">
+        <a href="{% url 'home' %}" class="btn btn-success">Ir al inicio</a>   
+      </div>
     </div>
   </div>
 </div>
 {% endblock %}
-
