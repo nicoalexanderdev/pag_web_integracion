@@ -17,13 +17,16 @@ import locale
 locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 # Create your views here.
+
+
 @login_required
 def pago(request):
     carrito = Carrito(request)
     detalles_entrega = request.session.get('detalles_entrega', {})
     print("Detalles de entrega:", detalles_entrega)
     print("Contenido del carrito:", carrito.carrito)
-    return render(request, 'app/pago.html')	
+    return render(request, 'app/pago.html')
+
 
 @login_required
 def agregar_detalles_entrega(request):
@@ -32,7 +35,8 @@ def agregar_detalles_entrega(request):
         direccion = request.POST.get('direccion')
         region_id = request.POST.get('region_id')
 
-        print(f"Tipo de entrega: {tipo_entrega}, Dirección: {direccion}, Región ID: {region_id}")
+        print(
+            f"Tipo de entrega: {tipo_entrega}, Dirección: {direccion}, Región ID: {region_id}")
 
         if tipo_entrega == 'Retiro':
             costo_despacho = 0
@@ -46,20 +50,20 @@ def agregar_detalles_entrega(request):
                 'tipo_entrega': tipo_entrega,
                 'direccion': direccion,
                 'region_id': region_id,
-                'fecha_entrega': (datetime.now() + timedelta(days=5)).strftime('%d de %B de %Y'),
+                'fecha_entrega': (datetime.now() + timedelta(days=5)).strftime('%Y-%m-%d'),
                 'costo_despacho': costo_despacho
             }
             request.session.modified = True
             return redirect('pago')
         else:
             messages.error(request, 'Error al agregar detalles de la entrega')
-            return redirect('checkout')  
+            return redirect('checkout')
 
 
 def index(request):
     try:
         response = requests.get(f'http://{settings.API_BASE_URL}')
-        response.raise_for_status() 
+        response.raise_for_status()
         productos = response.json()
         data = {
             'productos': productos,
@@ -72,7 +76,8 @@ def index(request):
 def detalle_producto(request, id):
 
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}')
+        response = requests.get(
+            f'http://{settings.API_BASE_URL}/get-producto/{id}')
 
         if response.status_code == 200:
             producto = response.json()
@@ -88,22 +93,25 @@ def detalle_producto(request, id):
     except Exception as e:
         messages.error(request, f'Error inesperado: {str(e)}')
         return redirect('home')
-    
+
+
 @login_required
 def checkout(request):
     carrito = Carrito(request)
     print("Contenido del carrito:", carrito.carrito)
-    
-    user_id = request.user.id 
+
+    user_id = request.user.id
 
     try:
         # Obtener direcciones del usuario
-        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
+        response = requests.get(
+            f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
         response.raise_for_status()
         direcciones_usuario = response.json()
 
         # Obtener sucursales
-        response_sucursales = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
+        response_sucursales = requests.get(
+            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
         response_sucursales.raise_for_status()
         sucursales = response_sucursales.json()
 
@@ -112,7 +120,7 @@ def checkout(request):
             'sucursales': sucursales
         }
         return render(request, 'app/checkout.html', data)
-    
+
     except requests.exceptions.HTTPError as http_err:
         print(f'HTTP error occurred: {http_err}')
         data = {
@@ -130,7 +138,8 @@ def checkout(request):
         }
 
     return render(request, 'app/checkout.html', data)
-    
+
+
 @login_required
 def agregar_direccion(request):
     if request.method == 'POST':
@@ -141,7 +150,8 @@ def agregar_direccion(request):
         comuna = request.POST.get('comuna')
 
         # Agrega mensajes de depuración para verificar los datos
-        print(f'Datos recibidos: {direccion}, {num_direccion}, {descripcion}, {comuna}')
+        print(
+            f'Datos recibidos: {direccion}, {num_direccion}, {descripcion}, {comuna}')
 
         payload = {
             'user': user_id,
@@ -152,20 +162,22 @@ def agregar_direccion(request):
         }
 
         try:
-            response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/agregar-direccion/', json=payload)
+            response = requests.post(
+                f'http://{settings.API_BASE_TRANSBANK_URL}/agregar-direccion/', json=payload)
             response.raise_for_status()
             print(f'Respuesta de la API: {response.json()}')
             return redirect('checkout')
         except requests.exceptions.RequestException as e:
             print(f'Error al enviar la solicitud: {e}')
             return JsonResponse({'error': str(e)}, status=400)
-    
+
     return redirect('home')
 
 
 def categoria(request, id):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}')
+        response = requests.get(
+            f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}')
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -187,7 +199,8 @@ def categoria(request, id):
 
 def marca(request, id):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-productos-marca/{id}')
+        response = requests.get(
+            f'http://{settings.API_BASE_URL}/get-productos-marca/{id}')
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -225,8 +238,9 @@ def registro(request):
                 messages.success(request, 'Te has registrado correctamente')
                 return redirect(to='home')
         else:
-            messages.error(request, 'No se ha podido registrar, intente nuevamente')
-                
+            messages.error(
+                request, 'No se ha podido registrar, intente nuevamente')
+
         data['form'] = formulario
 
     return render(request, 'registration/registro.html', data)
@@ -239,7 +253,9 @@ def agregar_carrito(request, id):
     carrito = Carrito(request)
 
     # Realiza la solicitud a la API para obtener los datos del producto
-    response = requests.get( f'http://{settings.API_BASE_URL}/get-producto/{id}')
+    response = requests.get(
+        f'http://{settings.API_BASE_URL}/get-producto/{id}')
+
     if response.status_code == 200:
         producto_data = response.json()
         carrito.agregar(producto_data)
@@ -248,17 +264,19 @@ def agregar_carrito(request, id):
         if referer_url:
             return HttpResponseRedirect(referer_url)
         else:
-            return redirect('home')  # Redirigir a home si no hay referencia
-        
+            return redirect('home')
+
     else:
         # Si la solicitud a la API falla, redirige a una página de error o muestra un mensaje de error
+        messages.error(request, 'No se pudo obtener el producto')
         return HttpResponseRedirect(reverse('home'))
 
-    
+
 def eliminar_carrito(request, id):
     carrito = Carrito(request)
     # Realiza la solicitud a la API para obtener los datos del producto
-    response = requests.get( f'http://{settings.API_BASE_URL}/get-producto/{id}')
+    response = requests.get(
+        f'http://{settings.API_BASE_URL}/get-producto/{id}')
     if response.status_code == 200:
         producto_data = response.json()
         carrito.eliminar(producto_data['id'])
@@ -267,7 +285,7 @@ def eliminar_carrito(request, id):
         if referer_url:
             return HttpResponseRedirect(referer_url)
         else:
-            return redirect('home')  
+            return redirect('home')
     else:
         # Si la solicitud a la API falla, redirige a una página de error o muestra un mensaje de error
         return HttpResponseRedirect(reverse('home'))
@@ -275,7 +293,8 @@ def eliminar_carrito(request, id):
 
 def restar_carrito(request, id):
     carrito = Carrito(request)
-    response = requests.get( f'http://{settings.API_BASE_URL}/get-producto/{id}')
+    response = requests.get(
+        f'http://{settings.API_BASE_URL}/get-producto/{id}')
 
     if response.status_code == 200:
         producto_data = response.json()
@@ -284,7 +303,7 @@ def restar_carrito(request, id):
         if referer_url:
             return HttpResponseRedirect(referer_url)
         else:
-            return redirect('home')  
+            return redirect('home')
     else:
         return HttpResponseRedirect(reverse('home'))
 
@@ -296,8 +315,7 @@ def limpiar_carrito(request):
     if referer_url:
         return HttpResponseRedirect(referer_url)
     else:
-        return redirect('home')  
-
+        return redirect('home')
 
 
 # Transbank views
@@ -319,7 +337,7 @@ def transbank(request):
     # control de error en la solicitud de commit de la transacción
     if 'error' in response_data:
         return JsonResponse(response_data, status=500)
-    
+
     # diccionario de mapeo de status de error
     status_mapping = {
         'FAILED': 'Transacción cancelada o rechazada',
@@ -361,7 +379,8 @@ def transbank(request):
 
     # guardamos en la base de datos
     try:
-        response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
+        response = requests.post(
+            f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
         response.raise_for_status()
         response_data = response.json()
         print(response_data)
@@ -377,47 +396,103 @@ def transbank(request):
             "monto": amount
         }
         return render(request, 'app/transbank.html', data)
-    
+
+    if status == 'AUTHORIZED':
+        status = 'Aprobado'
+
     # data si todo sale bien
     data = {
-        "resultado": status,
-        "codigo": authorization_code,
-        "monto": amount
+        "status": status,
+        "authorization_code": authorization_code,
+        "amount": amount,
+        "session_id": session_id,
+        "buy_order": buy_order,
+        "card_number": card_number,
+        "transaction_date": transaction_date
     }
 
-    # limpiamos el carrito
+    # generar orden de compra
+    try:
+        data_create = {
+            'user': request.user.id,
+            'subtotal': request.session.get('subtotal'),
+            'costo_despacho': request.session['detalles_entrega'].get('costo_despacho'),
+            'total': request.session.get('total_a_pagar'),
+            'tipo_entrega': request.session['detalles_entrega'].get('tipo_entrega'),
+            'direccion': request.session['detalles_entrega'].get('direccion'),
+            'fecha_entrega': request.session['detalles_entrega'].get('fecha_entrega'),
+            'correo': request.user.email
+        }
+
+        print(data_create)
+
+        create_orden_response = requests.post(
+            f'http://{settings.API_BASE_TRANSBANK_URL}/crear-orden-compra/', json=data_create)
+        create_orden_response.raise_for_status()
+        response_data = create_orden_response.json()
+        print(response_data)
+    except requests.RequestException as e:
+        print(f"Error al crear la orden de compra en la base de datos: {e}")
+        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+    
+    # productos de la orden de compra
     carrito = Carrito(request)
-    carrito.limpiar()  
+    try:
+        order_data = [
+            {'order': response_data.get('id'), 'producto': int(item['producto_id']), 'cantidad': int(item['cantidad'])}
+            for item in carrito.carrito.values()
+        ]
+
+        print(order_data)
+
+        order_data_response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/order-items/', json=order_data)
+        order_data_response.raise_for_status()
+        order_response = order_data_response.json()
+        print(order_response)
+    except requests.RequestException as e:
+        print(f"Error al cargar productos en la orden de compra en la base de datos: {e}")
+        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
 
     return render(request, 'app/transbank.html', data)
-    
 
 
 @login_required
 def ir_a_pagar(request):
-    
-    total_a_pagar = request.session.get('total_a_pagar')
 
-    print('total a pagar:', total_a_pagar)
+    if request.method == 'POST':
+        tipo_documento = request.POST.get('tipo_documento')
+        forma_pago = request.POST.get('forma_pago')
 
-    if total_a_pagar is None:
-        return JsonResponse({'error': 'No se encontró total_a_pagar en la sesión'}, status=500)
+        if tipo_documento and forma_pago:
+            request.session['forma_de_pago'] = {
+                'tipo_documento': tipo_documento,
+                'forma_pago': forma_pago
+            }
+            request.session.modified = True
+        else:
+            print('no se obtuvo tipo de documento y/o forma de pago')
 
+        total_a_pagar = request.session.get('total_a_pagar')
 
-    response_data = transbank_create(request, total_a_pagar)
-    
-    # verificamos recibir el token y la url
-    if 'token' in response_data and 'url' in response_data:
-        token = response_data['token']
-        url = response_data['url']
+        print('total a pagar:', total_a_pagar)
 
-        # Pasar la URL y el token a la plantilla
-        data = {
-            "url": url,
-            "token": token
-        }
+        if total_a_pagar is None:
+            return JsonResponse({'error': 'No se encontró total_a_pagar en la sesión'}, status=500)
 
-        return render(request, 'app/redirect_to_transbank.html', data)
-    else:
-        # Manejamos el caso en el que la respuesta de transbank_create no contiene el token o la URL
-        return JsonResponse({'error': 'No se recibió el token o la URL de Transbank'}, status=500)
+        response_data = transbank_create(request, total_a_pagar)
+
+        # verificamos recibir el token y la url
+        if 'token' in response_data and 'url' in response_data:
+            token = response_data['token']
+            url = response_data['url']
+
+            # Pasar la URL y el token a la plantilla
+            data = {
+                "url": url,
+                "token": token
+            }
+
+            return render(request, 'app/redirect_to_transbank.html', data)
+        else:
+            # Manejamos el caso en el que la respuesta de transbank_create no contiene el token o la URL
+            return JsonResponse({'error': 'No se recibió el token o la URL de Transbank'}, status=500)

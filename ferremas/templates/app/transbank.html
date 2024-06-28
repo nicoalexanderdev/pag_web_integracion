@@ -20,6 +20,14 @@
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <div class="d-flex justify-content-between align-items-center w-100">
                 <div class="d-flex align-items-center">
+                  <div class="fw-bold">Tipo de entrega</div>
+                </div>
+                <span>{{ request.session.detalles_entrega.tipo_entrega }}</span>
+              </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex align-items-center">
                   <div class="fw-bold">Dirección de envío</div>
                 </div>
                 <span>{{ request.session.detalles_entrega.direccion }}</span>
@@ -64,7 +72,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Forma de pago</div>
                 </div>
-                <span></span>
+                <span>{{ request.session.forma_de_pago.forma_pago }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -72,7 +80,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Tipo Documento</div>
                 </div>
-                <span></span>
+                <span>{{ request.session.forma_de_pago.tipo_documento }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -80,7 +88,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Orden de compra</div>
                 </div>
-                <span></span>
+                <span>{{ buy_order }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -88,7 +96,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Estado</div>
                 </div>
-                <span></span>
+                <span>{{ status }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -96,7 +104,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Número de tarjeta</div>
                 </div>
-                <span></span>
+                <span>Tarjeta terminada en {{ card_number }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -104,7 +112,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Fecha de transacción</div>
                 </div>
-                <span></span>
+                <span>{{ transaction_date }}</span>
               </div>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -112,7 +120,7 @@
                 <div class="d-flex align-items-center">
                   <div class="fw-bold">Código de Autorización</div>
                 </div>
-                <span>{{ codigo }}</span>
+                <span>{{ authorization_code }}</span>
               </div>
             </li>
           </ul>
@@ -124,57 +132,49 @@
           <strong>Productos</strong>
         </div>
         <div class="card-body">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Producto(s)</th>
-                <th scope="col">Precio</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% if request.session.carrito.items %}
-              {% for key, value in request.session.carrito.items %}
-              <tr>
-                <th scope="row">{{ value.cantidad }}</th>
-                <td>{{ value.nombre }}</td>
-                <td>{{ value.acumulado }}</td>
-              </tr>
-              {% endfor %}
-              {% else %}
-              <div class="alert alert-danger text-center">
-                Sin Productos
-              </div>
-              {% endif %}
-            </tbody>
-          </table>
-          <br>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Imagen</th>
+                  <th scope="col">Producto(s)</th>
+                  <th scope="col">Precio</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% if request.session.carrito.items %}
+                {% for key, value in request.session.carrito.items %}
+                <tr>
+                  <th scope="row">{{ value.cantidad }}</th>
+                  <th><img class="img-fluid" src="{{ value.image_url }}" alt="imagen-producto" style="max-width: 100px; height: auto;"></th>
+                  <td>{{ value.nombre }}</td>
+                  <td>${{ value.acumulado }}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <div class="alert alert-danger text-center">
+                  Sin Productos
+                </div>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
           <ul>
-            <br>
             <li class="list-group-item d-flex justify-content-between">
-              <span>Subtotal</span>
+              <span class="fw-bold">Subtotal</span>
               <span id="subtotal" data-value="{{ total_carrito }}">${{ total_carrito }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between">
-              <span>Total en pesos chilenos</span>
-              <span id="total_a_pagar">${{ total_pesos_chilenos }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Valor dolar actual</span>
-              <span id="valor_dolar" data-value="{{ valor_dolar }}">${{ valor_dolar }}</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total en dolares</span>
-              <span>${% widthratio total_pesos_chilenos valor_dolar 1 %}</span>
+              <span class="fw-bold">Total pagado</span>
+              <span id="total_a_pagar">${{ amount }}</span>
             </li>
           </ul>
         </div>
       </div>
       <br>
       <hr>
-      <div class="d-grid gap-2">
-        <a href="{% url 'home' %}" class="btn btn-success">Ir al inicio</a>   
-      </div>
+      <a href="{% url 'home' %}" class="btn btn-success">Ir al inicio</a>
     </div>
   </div>
 </div>

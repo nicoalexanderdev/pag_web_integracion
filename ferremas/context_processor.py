@@ -20,6 +20,7 @@ def total_carrito(request):
     total_pesos_chilenos = total + costo_despacho
 
     request.session['total_a_pagar'] = total_pesos_chilenos
+    request.session['subtotal'] = total
 
     return {
         'total_carrito': total,
