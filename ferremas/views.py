@@ -151,14 +151,19 @@ def agregar_direccion(request):
 
         # Agrega mensajes de depuración para verificar los datos
         print(
-            f'Datos recibidos: {direccion}, {num_direccion}, {descripcion}, {comuna}')
+            f'Datos recibidos: {user_id}, {direccion}, {num_direccion}, {descripcion}, {comuna}')
+        
+        if descripcion == '':
+            descripcion = None
+
+        print(descripcion)
 
         payload = {
-            'user': user_id,
+            'user': int(user_id),
             'direccion': direccion,
-            'num_direccion': num_direccion,
+            'num_direccion': int(num_direccion),
             'descripcion': descripcion,
-            'comuna': comuna
+            'comuna': int(comuna)
         }
 
         try:
@@ -382,8 +387,8 @@ def transbank(request):
         response = requests.post(
             f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
         response.raise_for_status()
-        response_data = response.json()
-        print(response_data)
+        response_data_trasaccion = response.json()
+        print('Respuesta al guardar la transaccion en la bd:', response_data_trasaccion)
     except requests.RequestException as e:
         print(f"Error al guardar la transacción en la base de datos: {e}")
         return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
@@ -412,6 +417,9 @@ def transbank(request):
     }
 
     # generar orden de compra
+
+    transaccion_id = response_data_trasaccion['transaction']['id']
+
     try:
         data_create = {
             'user': request.user.id,
@@ -421,7 +429,10 @@ def transbank(request):
             'tipo_entrega': request.session['detalles_entrega'].get('tipo_entrega'),
             'direccion': request.session['detalles_entrega'].get('direccion'),
             'fecha_entrega': request.session['detalles_entrega'].get('fecha_entrega'),
-            'correo': request.user.email
+            'correo': request.user.email,
+            'transaccion': transaccion_id,
+            'estado': 1,
+            'items': []
         }
 
         print(data_create)
@@ -429,17 +440,17 @@ def transbank(request):
         create_orden_response = requests.post(
             f'http://{settings.API_BASE_TRANSBANK_URL}/crear-orden-compra/', json=data_create)
         create_orden_response.raise_for_status()
-        response_data = create_orden_response.json()
-        print(response_data)
+        response_data_order = create_orden_response.json()
+        print('Respuesta al crear el orden de compra en la bd: ', response_data_order)
     except requests.RequestException as e:
         print(f"Error al crear la orden de compra en la base de datos: {e}")
-        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+        return JsonResponse({'error': 'Error al crear la orden de compra en la base de datos'}, status=500)
     
     # productos de la orden de compra
     carrito = Carrito(request)
     try:
         order_data = [
-            {'order': response_data.get('id'), 'producto': int(item['producto_id']), 'cantidad': int(item['cantidad'])}
+            {'order': response_data_order.get('id'), 'producto': int(item['producto_id']), 'cantidad': int(item['cantidad'])}
             for item in carrito.carrito.values()
         ]
 
@@ -448,10 +459,10 @@ def transbank(request):
         order_data_response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/order-items/', json=order_data)
         order_data_response.raise_for_status()
         order_response = order_data_response.json()
-        print(order_response)
+        print('Respuesta al ingresar los productos en la bd: ', order_response)
     except requests.RequestException as e:
         print(f"Error al cargar productos en la orden de compra en la base de datos: {e}")
-        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+        return JsonResponse({'error': 'Error al cargar productos en la orden de compra en la base de datos'}, status=500)
 
     return render(request, 'app/transbank.html', data)
 
