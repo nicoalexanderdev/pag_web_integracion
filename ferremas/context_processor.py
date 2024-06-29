@@ -32,17 +32,17 @@ def total_carrito(request):
 
 def categorias_processor(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-categorias')
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-categorias/')
         response.raise_for_status()
         categorias = response.json()
         return {'categorias': categorias}
     except requests.RequestException as e:
-        print(f"Error al obtener categorías: {e}")  # Depuración
+        print(f"Error al obtener categorías: {e}")
         return {'categorias': []}
     
 def marcas_processor(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-marcas')
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-marcas/')
         response.raise_for_status()
         marcas = response.json()
         return {'marcas': marcas}
@@ -52,7 +52,7 @@ def marcas_processor(request):
     
 def regiones(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/region')
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/region/')
         response.raise_for_status()  # Raise an exception for HTTP errors
         regiones = response.json()
         return {'regiones': regiones}

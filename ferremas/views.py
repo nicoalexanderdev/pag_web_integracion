@@ -62,7 +62,7 @@ def agregar_detalles_entrega(request):
 
 def index(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}')
+        response = requests.get(f'http://{settings.API_BASE_URL}/')
         response.raise_for_status()
         productos = response.json()
         data = {
@@ -77,7 +77,7 @@ def detalle_producto(request, id):
 
     try:
         response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-producto/{id}')
+            f'http://{settings.API_BASE_URL}/get-producto/{id}/')
 
         if response.status_code == 200:
             producto = response.json()
@@ -105,7 +105,7 @@ def checkout(request):
     try:
         # Obtener direcciones del usuario
         response = requests.get(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}')
+            f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}/')
         response.raise_for_status()
         direcciones_usuario = response.json()
 
@@ -182,7 +182,7 @@ def agregar_direccion(request):
 def categoria(request, id):
     try:
         response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}')
+            f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}/')
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -205,7 +205,7 @@ def categoria(request, id):
 def marca(request, id):
     try:
         response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-productos-marca/{id}')
+            f'http://{settings.API_BASE_URL}/get-productos-marca/{id}/')
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -259,7 +259,7 @@ def agregar_carrito(request, id):
 
     # Realiza la solicitud a la API para obtener los datos del producto
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
 
     if response.status_code == 200:
         producto_data = response.json()
@@ -281,7 +281,7 @@ def eliminar_carrito(request, id):
     carrito = Carrito(request)
     # Realiza la solicitud a la API para obtener los datos del producto
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
     if response.status_code == 200:
         producto_data = response.json()
         carrito.eliminar(producto_data['id'])
@@ -299,7 +299,7 @@ def eliminar_carrito(request, id):
 def restar_carrito(request, id):
     carrito = Carrito(request)
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
 
     if response.status_code == 200:
         producto_data = response.json()

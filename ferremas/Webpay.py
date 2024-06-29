@@ -68,7 +68,7 @@ def transbank_create(request, total_a_pagar):
 def transaction_commit(tokenws):
     try:
         # Realizar la solicitud a la API de Transbank para confirmar la transacción
-        url = f"http://{settings.API_BASE_TRANSBANK_URL}/commit/{tokenws}"
+        url = f"http://{settings.API_BASE_TRANSBANK_URL}/commit/{tokenws}/"
         headers = headers_request_transbank()
         response = requests.put(url, headers=headers)
         
