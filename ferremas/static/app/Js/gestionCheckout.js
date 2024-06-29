@@ -18,9 +18,6 @@ $(document).ready(function () {
                 espacios: true,
                 number: true
             },
-            descripcion: {
-                number: true
-            },
             region: {
                 required: true
             },
@@ -40,9 +37,6 @@ $(document).ready(function () {
                 required: "Por favor ingresa tu numero de direccion",
                 espacios: "No se aceptan espacios",
                 number: "Solo se aceptan numeros"
-            },
-            descripcion: {
-                number: "Solo se aceptan numeros en este campo"
             },
             region: {
                 required: "Region es requerida"

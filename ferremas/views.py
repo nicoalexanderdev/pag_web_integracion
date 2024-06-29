@@ -153,8 +153,6 @@ def agregar_direccion(request):
         print(
             f'Datos recibidos: {user_id}, {direccion}, {num_direccion}, {descripcion}, {comuna}')
         
-        if descripcion == '':
-            descripcion = None
 
         print(descripcion)
 
