@@ -119,7 +119,8 @@ def checkout(request):
 
         data = {
             'direcciones': direcciones_usuario,
-            'sucursales': sucursales
+            'sucursales': sucursales,
+            'goole_maps_api_key': settings.GOOGLE_MAPS_API_KEY
         }
         return render(request, 'app/checkout.html', data)
 
