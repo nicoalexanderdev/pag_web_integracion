@@ -74,10 +74,8 @@ def index(request):
 
 
 def detalle_producto(request, id):
-
     try:
-        response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-producto/{id}/')
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}/')
 
         if response.status_code == 200:
             producto = response.json()

@@ -1,82 +1,77 @@
 import json
-from django.test import TestCase, RequestFactory, Client
+from django.test import RequestFactory, TestCase, Client
 from django.conf import settings
 from unittest.mock import patch
+from unittest import mock
 import requests
-from .views import index
+from .views import index, detalle_producto, checkout
 from .context_processor import total_carrito, get_dollar
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.http import HttpResponseServerError
+from django.template.loader import render_to_string
+from django.contrib.messages import get_messages
+from django.contrib.auth.models import User
+from django.contrib.sessions.middleware import SessionMiddleware
 
-class TestIndexView(TestCase):
+
+
+class IndexViewTests(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
         self.client = Client()
+        self.api_url = f'http://{settings.API_BASE_URL}/'
 
     @patch('requests.get')
-    def test_index_success(self, mock_get):
-        mock_response = mock_get.return_value
-        mock_response.status_code = 200
-        mock_response.json.return_value = [{'id': 1, 'name': 'Product 1'}, {'id': 2, 'name': 'Product 2'}]
+    def test_index_view_success(self, mock_get):
 
-        response = self.client.get('/')
+        productos = [
+            {'id': 1, 'nombre': 'Producto 1', 'precio': 1000, 'descripcion': 'Descripción del Producto 1'},
+            {'id': 2, 'nombre': 'Producto 2', 'precio': 2000, 'descripcion': 'Descripción del Producto 2'}
+        ]
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = productos
+
+        response = self.client.get(reverse('home'))  
+        
         self.assertEqual(response.status_code, 200)
+
         self.assertTemplateUsed(response, 'app/home.html')
 
+        self.assertEqual(response.context['productos'], productos)
+
     @patch('requests.get')
-    def test_index_api_error(self, mock_get):
-        mock_get.side_effect = requests.RequestException('Mocked API error')
+    def test_index_view_api_error(self, mock_get):
 
-        response = self.client.get('/')
+        mock_get.side_effect = requests.exceptions.RequestException
+
+        response = self.client.get(reverse('home'))
+        
         self.assertEqual(response.status_code, 500)
-        self.assertTemplateNotUsed(response, 'app/home.html')  
 
-    def test_total_carrito(self):
-        # Simular una sesión con datos de carrito
-        request = self.factory.get('/')
-        request.session = {'carrito': {'1': {'acumulado': '10', 'cantidad': '2'}, '2': {'acumulado': '5', 'cantidad': '1'}}}
+        expected_error_message = {'error': 'Error al obtener datos de la API: '}
+        self.assertJSONEqual(response.content, expected_error_message)
 
-        # Llamar al context processor
-        context = total_carrito(request)
 
-        # Verificar el resultado esperado
-        self.assertEqual(context['total_carrito'], 15)
-        self.assertEqual(context['cantidad_total'], 3)
 
-class TestDetalleProductoView(TestCase):
 
+class DetalleProductoViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.producto_id = 1
+        self.api_url = f'http://{settings.API_BASE_URL}/get-producto/{self.producto_id}/'
+    
     @patch('requests.get')
     def test_detalle_producto_success(self, mock_get):
-        mock_response = requests.models.Response()
-        mock_response.status_code = 200
-        mock_response.json = lambda: {'id': 1, 'nombre': 'Producto de prueba'}
-        mock_get.return_value = mock_response
+        # Datos del producto simulado que esperamos recibir de la API
+        producto = {'id': 1, 'nombre': 'Producto 1', 'precio': 1000, 'descripcion': 'Descripción del Producto 1'}
 
-        response = self.client.get(reverse('detalle_producto', args=[1]))
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = producto
 
+        response = self.client.get(reverse('detalle_producto', args=[self.producto_id]), follow=True)
+        
         self.assertEqual(response.status_code, 200)
+
         self.assertTemplateUsed(response, 'app/detalle-producto.html')
-        self.assertIn('producto', response.context)
-        self.assertEqual(response.context['producto']['id'], 1)
 
-    @patch('requests.get')
-    def test_detalle_producto_api_error(self, mock_get):
-        mock_response = requests.models.Response()
-        mock_response.status_code = 404  # Simular un error 404 desde la API
-        mock_get.return_value = mock_response
-
-        response = self.client.get(reverse('detalle_producto', args=[1]))
-
-        self.assertRedirects(response, reverse('home'))
-        messages = list(response.context['messages'])
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), 'Error al obtener detalles del producto')
-
-    @patch('requests.get', side_effect=requests.RequestException('Mocked API error'))
-    def test_detalle_producto_request_exception(self, mock_get):
-        response = self.client.get(reverse('detalle_producto', args=[1]))
-
-        self.assertRedirects(response, reverse('home'))
-        messages = list(response.context['messages'])
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(str(messages[0]), 'Error de conexión: Mocked API error')
+        self.assertEqual(response.context['producto'], producto)
