@@ -63,31 +63,36 @@ def test_agregar_direccion_view(client):
 # test para obtener las direcciones del usuario
 @pytest.mark.django_db
 @responses.activate
-def test_checkout_view(client):
+def test_checkout_view(client: Client):
+
     # Crear un usuario de prueba y autenticarlo
     user = User.objects.create_user(username='testuser', password='testpassword')
     client.login(username='testuser', password='testpassword')
 
     # Datos simulados de direcciones de usuario
     direcciones_usuario = [
-        {'id': 1, 'user': user.id ,'direccion': 'Calle Ejemplo', 'num_direccion': 456, 'descripcion': 'Descripción de la dirección', 'comuna': 104},
-        {'id': 2, 'user': user.id ,'direccion': 'Av. Principal', 'num_direccion': 123, 'descripcion': 'Otra dirección', 'comuna': 104},
+        {'id': 1, 'user': user.id ,'direccion': 'Calle Ejemplo', 'num_direccion': 456, 'descripcion': 'Descripción de la dirección', 'comuna': {'id': 1, 'nom_comuna': 'comunaTest', 'provincia': {'id': 1, 'nom_provincia': 'provinciaTest', 'region': {'id': 1, 'nom_region': 'regionTest'}}}},
+        {'id': 2, 'user': user.id ,'direccion': 'Av. Principal', 'num_direccion': 123, 'descripcion': 'Otra dirección', 'comuna':{'id': 2, 'nom_comuna': 'comunaTest2', 'provincia': {'id': 2, 'nom_provincia': 'provinciaTest2', 'region': {'id': 2, 'nom_region': 'regionTest2'}}}},
     ]
 
-    # URL simulada para obtener direcciones de usuario
+    # URL de las llamadas a la api de la pagina de checkout
     api_direcciones_url = f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user.id}/'
+    api_sucursales_url = f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/'
     api_categorias_url = f'http://{settings.API_BASE_URL}/get-categorias/'
     api_marcas_url = f'http://{settings.API_BASE_URL}/get-marcas/'
     api_dollar_value_url = f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value/'
     api_region_url = f'http://{settings.API_BASE_TRANSBANK_URL}/region/'
+    api_provincia_url = f'http://{settings.API_BASE_TRANSBANK_URL}/provincia/'
 
-    # Simular la respuesta de la API de direcciones de usuario
+    # Simular la respuesta de la API 
     responses.add(responses.GET, api_direcciones_url, json=direcciones_usuario, status=200)
+    responses.add(responses.GET, api_sucursales_url, json=[], status=200)
     responses.add(responses.GET, api_categorias_url, json=[], status=200)
     responses.add(responses.GET, api_marcas_url, json=[], status=200)
     responses.add(responses.GET, api_dollar_value_url,
                   json={'value': 1.0}, status=200)
     responses.add(responses.GET, api_region_url, json=[], status=200)
+    responses.add(responses.GET, api_provincia_url, json=[], status=404)
 
     # Hacer una solicitud GET a la vista checkout
     response = client.get(reverse('checkout'))
@@ -96,8 +101,12 @@ def test_checkout_view(client):
     assert response.status_code == 200
 
     # Verificar que se mostraron las direcciones del usuario en la plantilla
+    content = response.content.decode()
     for direccion in direcciones_usuario:
-        assert direccion['direccion'] in str(response.content)
+        assert direccion['direccion'] in content
+        assert str(direccion['num_direccion']) in content
+        assert direccion['comuna']['nom_comuna'] in content
+        assert direccion['comuna']['provincia']['region']['nom_region'] in content
 
     # Limpiar las respuestas activadas
     responses.reset()
