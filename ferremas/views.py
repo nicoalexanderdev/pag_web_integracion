@@ -83,14 +83,18 @@ def detalle_producto(request, id):
             return render(request, 'app/detalle-producto.html', data)
         else:
             messages.error(request, 'Error al obtener detalles del producto')
-            return redirect('home')
+            producto = {} 
+            data = {'producto': producto}
+            return render(request, 'app/detalle-producto.html', data)
 
     except requests.RequestException as e:
         messages.error(request, f'Error de conexión: {str(e)}')
-        return redirect('home')
+
     except Exception as e:
         messages.error(request, f'Error inesperado: {str(e)}')
-        return redirect('home')
+
+    # Si ocurre algún error, redirigir a la página de inicio con mensaje de error
+    return redirect('home')
 
 
 @login_required
