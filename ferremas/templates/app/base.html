@@ -37,10 +37,10 @@
 
 
       <!-- buscador -->
-      <form class="d-flex justify-content-center" role="search">
+      <form class="d-flex justify-content-center" role="search" method="GET" action="{% url 'buscar_productos' %}">
         <div class="input-group">
-          <input class="form-control form-control-sm" type="search" placeholder="¡Hola! ¿Qué estás buscando?" aria-label="Search" style="width: 400px;">
-          <button class="btn btn-success btn-sm" type="submit">
+          <input class="form-control form-control-sm" type="search" placeholder="¡Hola! ¿Qué estás buscando?" aria-label="Search" style="width: 400px;" name="buscador" id="buscador">
+          <button class="btn btn-success btn-sm" type="submit" onclick="bucador();">
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -185,7 +185,7 @@
         <div class="col-12 col-md-3">
           <img class="img-fluid" src="{% static 'app/img/ferremas_logo.png' %}" alt="logo">
         </div>
-        <div class="col-12 col-md-3 text-start">
+        <div class="col-12 col-md-3">
           <h5 class="text-black-50">Contáctanos</h5>
           <ul class="list-unstyled text-small align-items-center ulp ul-horizontal">
             <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Mesa de ayuda</a></li>
@@ -195,13 +195,10 @@
                 ferremas@contacto.cl</a></li>
           </ul>
         </div>
-        <div class="col-12 col-md-3 text-start">
+        <div class="col-12 col-md-3">
           <h5 class="text-black-50">Ayuda</h5>
           <ul class="list-unstyled text-small ulp ul-horizontal">
-            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Preguntas
-                frecuentes</a></li>
-            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Quienes somos</a></li>
-            <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Nuestras Tiendas</a>
+            <li class="mb-1"><a class="link-secondary text-decoration-none" href="{% url 'sucursales' %}">Nuestras Tiendas</a>
           </ul>
         </div>
         <div class="col-12 col-md-3">

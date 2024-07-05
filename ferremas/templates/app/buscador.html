@@ -1,0 +1,40 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}
+<title>Resultados</title>
+{% endblock %}
+
+{% block contenido %}
+<br><br>
+
+<div class="container">
+  <div class="row">
+    <h5>Resultados para la búsqueda: {{ busqueda }}</h5>
+    <hr>
+    <br>
+    {% if resultados %}
+    {% for r in resultados %}
+    <div class="col-12 col-md-6 col-lg-3">
+      <a href="{% url 'detalle_producto' r.id %}" style="text-decoration: none;">
+
+        <div class="card mb-3 zoom-card">
+
+          <img src="{{ r.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
+
+          <div class="card-body">
+            <h5 class="card-title">{{ r.nombre }}</h5>
+            <h6>{{ r.marca.nom_marca }}</h6>
+            <h3>${{ r.precio }}</h3>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-danger text-center">
+      No se encontraron coincidencias
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

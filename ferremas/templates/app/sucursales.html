@@ -1,0 +1,37 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}
+<title>Sucursales</title>
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <br><br><br>
+      <h5>Conoce nuestras sucursales</h5>
+      <hr>
+      <br>
+      {% if sucursales %}
+      <ul class="list-group">
+        {% for s in sucursales %}
+
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{ s.nom_sucursal }}</div>
+            {{ s.direccion}}, {{ s.num_direccion }}, {{ s.comuna.nom_comuna }}
+          </div>
+        </li>
+
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div class="alert alert-danger" role="alert">
+        Error en obtener las sucursales
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -18,6 +18,39 @@ locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 
 # Create your views here.
 
+def buscar_productos(request):
+    query = request.GET.get('buscador')
+    api_base_url = settings.API_BASE_URL  
+
+    if query:
+        response = requests.get(f'http://{api_base_url}/buscar-productos/', params={'search': query})
+    else:
+        response = requests.get(f'http://{api_base_url}/buscar-productos/')
+
+    if response.status_code == 200:
+        resultados = response.json()
+    else:
+        resultados = []
+
+    return render(request, 'app/buscador.html', {'resultados': resultados, 'busqueda': query})
+
+
+def sucursales(request):
+    try:
+        # Obtener sucursales
+        response_sucursales = requests.get(
+            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
+        response_sucursales.raise_for_status()
+        sucursales = response_sucursales.json()
+
+        data = {
+            'sucursales': sucursales
+        }
+
+        return render(request, 'app/sucursales.html', data)
+    except requests.RequestException as e:
+        messages.error(request, f'Error de conexión: {str(e)}')
+
 
 @login_required
 def pago(request):
