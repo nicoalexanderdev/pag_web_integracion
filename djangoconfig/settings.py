@@ -82,6 +82,12 @@ API_BASE_TRANSBANK_URL = "127.0.0.1:8000/api/compras"
 TRANSBANK_RETURN_URL = "127.0.0.1:7000/transbank"
 GOOGLE_MAPS_API_KEY = 'AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc'
 
+# credenciales API integracion
+USERNAME = 'nico2'
+PASSWORD = 'nico1234'
+EMAIL = 'nico@correo.com'
+API_TOKEN = 'Token 7688f81c094d735e469a4fc4cba97917bf07c89b'
+
 WSGI_APPLICATION = 'djangoconfig.wsgi.application'
 
 

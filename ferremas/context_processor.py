@@ -33,7 +33,8 @@ def total_carrito(request):
 
 def categorias_processor(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-categorias/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-categorias/', headers=headers)
         response.raise_for_status()
         categorias = response.json()
         return {'categorias': categorias}
@@ -43,7 +44,8 @@ def categorias_processor(request):
     
 def marcas_processor(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-marcas/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-marcas/', headers=headers)
         response.raise_for_status()
         marcas = response.json()
         return {'marcas': marcas}
@@ -53,7 +55,8 @@ def marcas_processor(request):
     
 def regiones(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/region/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/region/', headers=headers)
         response.raise_for_status()  # Raise an exception for HTTP errors
         regiones = response.json()
         return {'regiones': regiones}
@@ -64,7 +67,8 @@ def regiones(request):
     
 def get_dollar(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/get-dollar-value/', headers=headers)
         response.raise_for_status()
         valor_dolar = response.json()
 

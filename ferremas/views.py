@@ -21,11 +21,12 @@ locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 def buscar_productos(request):
     query = request.GET.get('buscador')
     api_base_url = settings.API_BASE_URL  
+    headers = {'Authorization': settings.API_TOKEN}
 
     if query:
-        response = requests.get(f'http://{api_base_url}/buscar-productos/', params={'search': query})
+        response = requests.get(f'http://{api_base_url}/buscar-productos/', params={'search': query}, headers=headers)
     else:
-        response = requests.get(f'http://{api_base_url}/buscar-productos/')
+        response = requests.get(f'http://{api_base_url}/buscar-productos/', headers=headers)
 
     if response.status_code == 200:
         resultados = response.json()
@@ -37,9 +38,10 @@ def buscar_productos(request):
 
 def sucursales(request):
     try:
+        headers = {'Authorization': settings.API_TOKEN}
         # Obtener sucursales
         response_sucursales = requests.get(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
+            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/', headers=headers)
         response_sucursales.raise_for_status()
         sucursales = response_sucursales.json()
 
@@ -95,7 +97,8 @@ def agregar_detalles_entrega(request):
 
 def index(request):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_URL}/', headers=headers)
         response.raise_for_status()
         productos = response.json()
         data = {
@@ -108,7 +111,8 @@ def index(request):
 
 def detalle_producto(request, id):
     try:
-        response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}/')
+        headers = {'Authorization': settings.API_TOKEN}
+        response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}/', headers=headers)
 
         if response.status_code == 200:
             producto = response.json()
@@ -139,14 +143,15 @@ def checkout(request):
 
     try:
         # Obtener direcciones del usuario
+        headers = {'Authorization': settings.API_TOKEN}
         response = requests.get(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}/')
+            f'http://{settings.API_BASE_TRANSBANK_URL}/direccion/{user_id}/', headers=headers)
         response.raise_for_status()
         direcciones_usuario = response.json()
 
         # Obtener sucursales
         response_sucursales = requests.get(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/')
+            f'http://{settings.API_BASE_TRANSBANK_URL}/sucursales/', headers=headers)
         response_sucursales.raise_for_status()
         sucursales = response_sucursales.json()
 
@@ -178,6 +183,7 @@ def checkout(request):
 
 @login_required
 def agregar_direccion(request):
+    headers = {'Authorization': settings.API_TOKEN}
     if request.method == 'POST':
         user_id = request.user.id
         direccion = request.POST.get('dir')
@@ -202,7 +208,7 @@ def agregar_direccion(request):
 
         try:
             response = requests.post(
-                f'http://{settings.API_BASE_TRANSBANK_URL}/agregar-direccion/', json=payload)
+                f'http://{settings.API_BASE_TRANSBANK_URL}/agregar-direccion/', json=payload, headers=headers)
             response.raise_for_status()
             print(f'Respuesta de la API: {response.json()}')
             return redirect('checkout')
@@ -214,9 +220,10 @@ def agregar_direccion(request):
 
 
 def categoria(request, id):
+    headers = {'Authorization': settings.API_TOKEN}
     try:
         response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}/')
+            f'http://{settings.API_BASE_URL}/get-productos-categoria/{id}/', headers=headers)
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -237,9 +244,10 @@ def categoria(request, id):
 
 
 def marca(request, id):
+    headers = {'Authorization': settings.API_TOKEN}
     try:
         response = requests.get(
-            f'http://{settings.API_BASE_URL}/get-productos-marca/{id}/')
+            f'http://{settings.API_BASE_URL}/get-productos-marca/{id}/', headers=headers)
         response.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
         productos = response.json()
 
@@ -290,10 +298,11 @@ def registro(request):
 
 def agregar_carrito(request, id):
     carrito = Carrito(request)
+    headers = {'Authorization': settings.API_TOKEN}
 
     # Realiza la solicitud a la API para obtener los datos del producto
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/', headers=headers)
 
     if response.status_code == 200:
         producto_data = response.json()
@@ -313,9 +322,11 @@ def agregar_carrito(request, id):
 
 def eliminar_carrito(request, id):
     carrito = Carrito(request)
+    headers = {'Authorization': settings.API_TOKEN}
+
     # Realiza la solicitud a la API para obtener los datos del producto
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/', headers=headers)
     if response.status_code == 200:
         producto_data = response.json()
         carrito.eliminar(producto_data['id'])
@@ -332,8 +343,10 @@ def eliminar_carrito(request, id):
 
 def restar_carrito(request, id):
     carrito = Carrito(request)
+    headers = {'Authorization': settings.API_TOKEN}
+
     response = requests.get(
-        f'http://{settings.API_BASE_URL}/get-producto/{id}/')
+        f'http://{settings.API_BASE_URL}/get-producto/{id}/', headers=headers)
 
     if response.status_code == 200:
         producto_data = response.json()
@@ -362,6 +375,8 @@ def limpiar_carrito(request):
 
 @csrf_exempt
 def transbank(request):
+
+    headers = {'Authorization': settings.API_TOKEN}
 
     # Capturar el token proporcionado por Webpay en la URL de retorno
     tokenws = request.GET.get('token_ws')
@@ -398,107 +413,108 @@ def transbank(request):
     installments_number = response_data.get('installments_number')
     user = request.user.id
 
-    # creamos diccionario para guardar los datos de la transaccion en la base de datos
-    data_db = {
-        "user": user,
-        "buy_order": buy_order,
-        "session_id": session_id,
-        "amount": amount,
-        "status": status,
-        "card_number": card_number,
-        "accounting_date": accounting_date,
-        "transaction_date": transaction_date,
-        "authorization_code": authorization_code,
-        "payment_type_code": payment_type_code,
-        "response_code": response_code,
-        "installments_number": installments_number
-    }
+    # Flujo en caso de rechazar pago
+    if status in status_mapping.keys():
+        messages.error(request, status_mapping[status])
+        return redirect('pago')
+    
 
-    print(data_db)
-
-    # guardamos en la base de datos
-    try:
-        response = requests.post(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db)
-        response.raise_for_status()
-        response_data_trasaccion = response.json()
-        print('Respuesta al guardar la transaccion en la bd:', response_data_trasaccion)
-    except requests.RequestException as e:
-        print(f"Error al guardar la transacción en la base de datos: {e}")
-        return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
-
-   # Manejamos el caso en que la transacción es cancelada
-    if status in status_mapping:
-        data = {
-            "resultado": status_mapping[status],
-            "codigo": authorization_code,
-            "monto": amount
-        }
-        return render(request, 'app/transbank.html', data)
-
+    # flujo en caso de pago autorizado
     if status == 'AUTHORIZED':
+    
+
+        # creamos diccionario para guardar los datos de la transaccion en la base de datos
+        data_db = {
+            "user": user,
+            "buy_order": buy_order,
+            "session_id": session_id,
+            "amount": amount,
+            "status": status,
+            "card_number": card_number,
+            "accounting_date": accounting_date,
+            "transaction_date": transaction_date,
+            "authorization_code": authorization_code,
+            "payment_type_code": payment_type_code,
+            "response_code": response_code,
+            "installments_number": installments_number
+        }
+
+        print(data_db)
+
+        # guardamos en la base de datos
+        try:
+            response = requests.post(
+                f'http://{settings.API_BASE_TRANSBANK_URL}/transaction-save/', json=data_db, headers=headers)
+            response.raise_for_status()
+            response_data_trasaccion = response.json()
+            print('Respuesta al guardar la transaccion en la bd:', response_data_trasaccion)
+        except requests.RequestException as e:
+            print(f"Error al guardar la transacción en la base de datos: {e}")
+            return JsonResponse({'error': 'Error al guardar la transacción en la base de datos'}, status=500)
+
+        # modificamos el estatus al españos para mostrar al cliente
         status = 'Aprobado'
 
-    # data si todo sale bien
-    data = {
-        "status": status,
-        "authorization_code": authorization_code,
-        "amount": amount,
-        "session_id": session_id,
-        "buy_order": buy_order,
-        "card_number": card_number,
-        "transaction_date": transaction_date
-    }
-
-    # generar orden de compra
-
-    transaccion_id = response_data_trasaccion['transaction']['id']
-
-    try:
-        data_create = {
-            'user': request.user.id,
-            'subtotal': request.session.get('subtotal'),
-            'costo_despacho': request.session['detalles_entrega'].get('costo_despacho'),
-            'total': request.session.get('total_a_pagar'),
-            'tipo_entrega': request.session['detalles_entrega'].get('tipo_entrega'),
-            'direccion': request.session['detalles_entrega'].get('direccion'),
-            'fecha_entrega': request.session['detalles_entrega'].get('fecha_entrega'),
-            'correo': request.user.email,
-            'transaccion': transaccion_id,
-            'estado': 1,
-            'items': []
+        # data si todo sale bien
+        data = {
+            "status": status,
+            "authorization_code": authorization_code,
+            "amount": amount,
+            "session_id": session_id,
+            "buy_order": buy_order,
+            "card_number": card_number,
+            "transaction_date": transaction_date
         }
 
-        print(data_create)
+        # generar orden de compra
 
-        create_orden_response = requests.post(
-            f'http://{settings.API_BASE_TRANSBANK_URL}/crear-orden-compra/', json=data_create)
-        create_orden_response.raise_for_status()
-        response_data_order = create_orden_response.json()
-        print('Respuesta al crear el orden de compra en la bd: ', response_data_order)
-    except requests.RequestException as e:
-        print(f"Error al crear la orden de compra en la base de datos: {e}")
-        return JsonResponse({'error': 'Error al crear la orden de compra en la base de datos'}, status=500)
+        transaccion_id = response_data_trasaccion['transaction']['id']
+
+        try:
+            data_create = {
+                'user': request.user.id,
+                'subtotal': request.session.get('subtotal'),
+                'costo_despacho': request.session['detalles_entrega'].get('costo_despacho'),
+                'total': request.session.get('total_a_pagar'),
+                'tipo_entrega': request.session['detalles_entrega'].get('tipo_entrega'),
+                'direccion': request.session['detalles_entrega'].get('direccion'),
+                'fecha_entrega': request.session['detalles_entrega'].get('fecha_entrega'),
+                'correo': request.user.email,
+                'transaccion': transaccion_id,
+                'estado': 1,
+                'items': []
+            }
+
+            print(data_create)
+
+            create_orden_response = requests.post(
+                f'http://{settings.API_BASE_TRANSBANK_URL}/crear-orden-compra/', json=data_create, headers=headers)
+            create_orden_response.raise_for_status()
+            response_data_order = create_orden_response.json()
+            print('Respuesta al crear el orden de compra en la bd: ', response_data_order)
+        except requests.RequestException as e:
+            print(f"Error al crear la orden de compra en la base de datos: {e}")
+            return JsonResponse({'error': 'Error al crear la orden de compra en la base de datos'}, status=500)
     
-    # productos de la orden de compra
-    carrito = Carrito(request)
-    try:
-        order_data = [
-            {'order': response_data_order.get('id'), 'producto': int(item['producto_id']), 'cantidad': int(item['cantidad'])}
-            for item in carrito.carrito.values()
-        ]
+        # productos de la orden de compra
+        carrito = Carrito(request)
+        try:
+            order_data = [
+                {'order': response_data_order.get('id'), 'producto': int(item['producto_id']), 'cantidad': int(item['cantidad'])}
+                for item in carrito.carrito.values()
+            ]
 
-        print(order_data)
+            print(order_data)
 
-        order_data_response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/order-items/', json=order_data)
-        order_data_response.raise_for_status()
-        order_response = order_data_response.json()
-        print('Respuesta al ingresar los productos en la bd: ', order_response)
-    except requests.RequestException as e:
-        print(f"Error al cargar productos en la orden de compra en la base de datos: {e}")
-        return JsonResponse({'error': 'Error al cargar productos en la orden de compra en la base de datos'}, status=500)
+            order_data_response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/order-items/', json=order_data, headers=headers)
+            order_data_response.raise_for_status()
+            order_response = order_data_response.json()
+            print('Respuesta al ingresar los productos en la bd: ', order_response)
+        except requests.RequestException as e:
+            print(f"Error al cargar productos en la orden de compra en la base de datos: {e}")
+            return JsonResponse({'error': 'Error al cargar productos en la orden de compra en la base de datos'}, status=500)
 
-    return render(request, 'app/transbank.html', data)
+        return render(request, 'app/transbank.html', data)
 
 
 @login_required
@@ -517,13 +533,16 @@ def ir_a_pagar(request):
         else:
             print('no se obtuvo tipo de documento y/o forma de pago')
 
+        subtotal = request.session.get('subtotal')
         total_a_pagar = request.session.get('total_a_pagar')
 
+        print('subtotal: ', subtotal)
         print('total a pagar:', total_a_pagar)
 
-        if total_a_pagar is None:
-            return JsonResponse({'error': 'No se encontró total_a_pagar en la sesión'}, status=500)
-
+        if subtotal == 0:
+            messages.error(request, 'No se puede proceder al pago si no tienes productos en el carro de compras')
+            return redirect('home')
+        
         response_data = transbank_create(request, total_a_pagar)
 
         # verificamos recibir el token y la url

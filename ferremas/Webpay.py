@@ -6,9 +6,9 @@ from ferremas.Carrito import Carrito
 from django.contrib.auth.decorators import login_required
 from django.middleware.csrf import get_token
 
-def headers_request_transbank():
+def headers_request_transbank(token):
   headers = { # DEFINICIÓN TIPO DE AUTORIZACIÓN Y AUTENTICACIÓN
-                "Authorization": "Token",
+                "Authorization": token,
 
                 # LLAVE QUE DEBE SER MODIFICADA PORQUE ES SOLO DEL AMBIENTE DE INTEGRACIÓN DE TRANSBANK (PRUEBAS)
                 "Tbk-Api-Key-Id": "597055555532",
@@ -45,9 +45,11 @@ def transbank_create(request, total_a_pagar):
         "return_url": return_url
     }
 
+    token = settings.API_TOKEN
+
     # Realizar la solicitud a la API de Transbank
-    headers = headers_request_transbank()
-    response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/transaction/create/', json=data, headers=headers)
+    headers = headers_request_transbank(token)
+    response = requests.post(f'http://{settings.API_BASE_TRANSBANK_URL}/transaction/create/', json=data, headers=headers,)
 
     if response.status_code == 200:
         response_data = response.json()
@@ -67,9 +69,10 @@ def transbank_create(request, total_a_pagar):
 
 def transaction_commit(tokenws):
     try:
+        token = settings.API_TOKEN
         # Realizar la solicitud a la API de Transbank para confirmar la transacción
         url = f"http://{settings.API_BASE_TRANSBANK_URL}/commit/{tokenws}/"
-        headers = headers_request_transbank()
+        headers = headers_request_transbank(token)
         response = requests.put(url, headers=headers)
         
         if response.status_code == 200:

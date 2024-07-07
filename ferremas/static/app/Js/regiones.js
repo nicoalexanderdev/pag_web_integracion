@@ -1,12 +1,13 @@
 let regionesSelect = document.getElementById('regiones');
 let provinciasSelect = document.getElementById('provincias');
 let comunasSelect = document.getElementById('comunas');
+const headers = { 'Authorization': 'Token 7688f81c094d735e469a4fc4cba97917bf07c89b' }
 
 // Función para cargar provincias y comunas basadas en la selección actual
 function cargarProvinciasYComunas() {
     let regionId = regionesSelect.value;
 
-    fetch(`http://localhost:8000/api/compras/provincia/${regionId}`)
+    fetch(`http://localhost:8000/api/compras/provincia/${regionId}`, {headers: headers})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -37,7 +38,9 @@ function cargarProvinciasYComunas() {
 
 // Función para cargar las comunas de una provincia seleccionada
 function cargarComunas(provinciaId) {
-    fetch(`http://localhost:8000/api/compras/comuna/${provinciaId}`)
+    fetch(`http://localhost:8000/api/compras/comuna/${provinciaId}`, {
+        headers: headers
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
