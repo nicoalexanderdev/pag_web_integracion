@@ -15,16 +15,22 @@
     {% if resultados %}
     {% for r in resultados %}
     <div class="col-12 col-md-6 col-lg-3">
-      <a href="{% url 'detalle_producto' r.id %}" style="text-decoration: none;">
+      <a href="{% url 'detalle_producto' r.id %}" style="text-decoration: none; color: black;">
 
         <div class="card mb-3 zoom-card">
 
           <img src="{{ r.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
 
           <div class="card-body">
-            <h5 class="card-title">{{ r.nombre }}</h5>
-            <h6>{{ r.marca.nom_marca }}</h6>
-            <h3>${{ r.precio }}</h3>
+            <strong>{{ r.marca.nom_marca }}</strong>
+            <p class="card-title">{{ r.nombre }}</p>
+            <strong>${{ r.precio }}</strong>
+            <div class="d-grid mt-3">
+              <a href="{% url 'agregar-carrito' r.id %}"  class="btn btn-success">
+                Agregar al carro
+                <i class="bi bi-cart"></i>
+              </a>
+            </div>
           </div>
         </div>
       </a>

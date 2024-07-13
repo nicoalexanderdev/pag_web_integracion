@@ -1,6 +1,5 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% load humanize %}
 {% block title %}
 <title>Marca</title>
 {% endblock %}
@@ -15,16 +14,22 @@
     <hr>
     {% for p in productos %}
     <div class="col-12 col-md-6 col-lg-3">
-      <a href="{% url 'detalle_producto' p.id %}" style="text-decoration: none;">
+      <a href="{% url 'detalle_producto' p.id %}" style="text-decoration: none; color: black;">
 
         <div class="card mb-3 zoom-card">
 
           <img src="{{ p.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
 
           <div class="card-body">
-            <h5 class="card-title">{{ p.nombre }}</h5>
-            <h6>{{ p.marca.nom_marca }}</h6>
-            <h3>${{ p.precio | intcomma }}</h3>
+            <strong>{{ p.marca.nom_marca }}</strong>
+            <p class="card-title">{{ p.nombre }}</p>
+            <strong>${{ p.precio }}</strong>
+            <div class="d-grid mt-3">
+              <a href="{% url 'agregar-carrito' p.id %}"  class="btn btn-success">
+                Agregar al carro
+                <i class="bi bi-cart"></i>
+              </a>
+            </div>
           </div>
         </div>
       </a>

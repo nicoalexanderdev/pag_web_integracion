@@ -4,7 +4,7 @@ $(document).ready(function () {
         tipo_documento: {
           required: true
         },
-        transbank: {
+        forma_pago: {
           required: true
         }
       },
@@ -12,7 +12,7 @@ $(document).ready(function () {
           tipo_documento: {
             required: "Por favor selecciona tipo de documento"
           },
-          transbank: {
+          forma_pago: {
             required: "Por favor selecciona metodo de pago"
           }
       }

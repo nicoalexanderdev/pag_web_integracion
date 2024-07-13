@@ -19,14 +19,14 @@ locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
 # Create your views here.
 
 def buscar_productos(request):
-    query = request.GET.get('buscador')
+    query = request.GET.get('query')
     api_base_url = settings.API_BASE_URL  
     headers = {'Authorization': settings.API_TOKEN}
 
     if query:
-        response = requests.get(f'http://{api_base_url}/buscar-productos/', params={'search': query}, headers=headers)
+        response = requests.get(f'http://{api_base_url}/buscar-productos', params={'search': query}, headers=headers)
     else:
-        response = requests.get(f'http://{api_base_url}/buscar-productos/', headers=headers)
+        response = requests.get(f'http://{api_base_url}/buscar-productos', headers=headers)
 
     if response.status_code == 200:
         resultados = response.json()
@@ -531,7 +531,9 @@ def ir_a_pagar(request):
             }
             request.session.modified = True
         else:
+            messages.error(request, 'Seleccione tipo de documento y/o forma de pago')
             print('no se obtuvo tipo de documento y/o forma de pago')
+            return redirect('pago')
 
         subtotal = request.session.get('subtotal')
         total_a_pagar = request.session.get('total_a_pagar')

@@ -42,7 +42,7 @@
 
 
   {% if request.session.detalles_entrega %}
-    {% if request.path == '/checkout/' or  request.path == '/pago/' %}
+    {% if request.path == '/pago/' %}
     <div class="mt-3">
       <h5>Detalles de la entrega</h5>
       <ul class="list-group">
