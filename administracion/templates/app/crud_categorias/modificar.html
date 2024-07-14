@@ -1,0 +1,54 @@
+{% extends 'app/base2.html' %}
+{% block title %}
+<title>Categorias</title>
+{% endblock %}
+
+{% block contenido %}
+<br><br><br>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+
+      <div class="card">
+
+        <div class="card-header">
+          <strong>Modificar categoria</strong>
+        </div>
+
+
+        <div class="card-body">
+
+          <form action="" method="post">
+
+            {% csrf_token %}
+
+            <div class="container">
+              <div class="row">
+                {% if categoria %}
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="nom_categoria" class="form-label">Nombre</label>
+                    <input type="text" name="nom_categoria" class="form-control" id="nom_categoria" placeholder="nombre categoria" value="{{ categoria.nom_categoria }}">
+                  </div>
+                </div>
+                {% endif %}
+                <div>
+                  <a href="{% url 'categorias' %}">Volver</a>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <input type="submit" value="Modificar categoria" class="btn btn-success">
+                  &nbsp;
+                  <input type="reset" value="Cancelar" class="btn btn-danger">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br><br>
+{% endblock %}

@@ -30,7 +30,7 @@
   <nav class="navbar bg-body-tertiary">
     <div class="container">
       <!-- imagen de logo -->
-      <a class="navbar-brand" href="{% url 'home' %}">
+      <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'app/img/ferremas_logo.png' %}" alt="Logo" width="80" height="80"
           class="d-inline-block align-text-top">
       </a>
@@ -74,18 +74,22 @@
         </li>
 
         <li class="nav-item">
+          <a href="{% url 'index' %}" class="btn btn-light">Home</a>
+        </li>
+
+        <li class="nav-item">
           <a href="{% url 'productos' %}" class="btn btn-light">Productos</a>
         </li>
        
 
         <li class="nav-item">
 
-          <a href="#" class="btn btn-light">Categorías</a>
+          <a href="{% url 'categorias' %}" class="btn btn-light">Categorías</a>
 
         </li>
         <li class="nav-item">
 
-          <a href="#" class="btn btn-light">Marcas</a>
+          <a href="{% url 'marcas' %}" class="btn btn-light">Marcas</a>
 
 
         </li>
