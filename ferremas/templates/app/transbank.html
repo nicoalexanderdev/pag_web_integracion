@@ -147,7 +147,7 @@
                 {% for key, value in request.session.carrito.items %}
                 <tr>
                   <th scope="row">{{ value.cantidad }}</th>
-                  <th><img class="img-fluid" src="{{ value.image_url }}" alt="imagen-producto" style="max-width: 100px; height: auto;"></th>
+                  <th><img class="img-fluid" src="http://127.0.0.1:8000/{{ value.image_url }}" alt="imagen-producto" style="max-width: 100px; height: auto;"></th>
                   <td>{{ value.nombre }}</td>
                   <td>${{ value.acumulado }}</td>
                 </tr>

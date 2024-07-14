@@ -1,0 +1,96 @@
+{% extends 'app/base2.html' %}
+{% block title %}
+<title>Productos</title>
+{% endblock %}
+
+{% block contenido %}
+<br><br><br>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+
+      <div class="card">
+
+        <div class="card-header">
+          <strong>Agregar nuevo producto</strong>
+        </div>
+
+
+        <div class="card-body">
+
+          <form action="" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="container">
+              <div class="row">
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" name="nombre" class="form-control" id="nombre" placeholder="nombre producto">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="precio" class="form-label">Precio</label>
+                    <input type="number" name="precio" class="form-control" id="precio" placeholder="Precio">
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen del producto</label><br>
+                    <input type="file" name="imagen" class="form-control">
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="mb-3">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock">
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoría</label>
+                    <select class="form-select" name="categoria" id="categoria">
+                      {% for c in categorias %}
+                      <option value="{{ c.id }}">{{ c.nom_categoria }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="mb-3">
+                    <label for="marca" class="form-label">Marca</label>
+                    <select class="form-select" name="marca" id="marca">
+                      {% for m in marcas %}
+                      <option value="{{ m.id }}">{{ m.nom_marca }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción</label>
+                    <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+                  </div>
+                </div>
+                <div>
+                  <a href="{% url 'productos' %}">Volver</a>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <input type="submit" value="Agregar producto" class="btn btn-success">
+                  &nbsp;
+                  <input type="reset" value="Cancelar" class="btn btn-danger">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br><br><br>
+{% endblock %}

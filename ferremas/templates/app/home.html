@@ -15,7 +15,7 @@
 
         <div class="card mb-3 zoom-card">
 
-          <img src="{{ p.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
+          <img src="{{ media }}{{ p.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
 
           <div class="card-body">
             <a href="{% url 'marca' p.marca.id %}" style="text-decoration: none; color: black;">

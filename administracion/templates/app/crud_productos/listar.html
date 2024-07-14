@@ -1,0 +1,89 @@
+{% extends "app/base2.html" %}
+{% block title %}
+<title>Productos</title>
+{% endblock %}
+
+{% block js %}
+
+<script>
+  function eliminarProducto(id) {
+    Swal.fire({
+      "title": "¿Estás Seguro?",
+      "text": "Esta acción no se puede deshacer",
+      "icon": "question",
+      "showCancelButton": true,
+      "cancelButtonText": "No, Cancelar",
+      "confirmButtonText": "Si, Eliminar",
+      "reverseButtons": true,
+      "confirmButtonColor": "#dc3545",
+    })
+    .then(function(result){
+      if(result.isConfirmed){
+        window.location.href = "/administracion/productos/eliminar/"+id
+      }
+    })
+  }  
+</script>
+
+{% endblock %}
+
+{% block contenido %}
+
+<br><br><br>
+<div class="container">
+  <div class="table-reponsive">
+    <table class="table table-sm">
+      <h2>Listado de Productos</h2>
+      <hr>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Imagen</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in entity %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.nombre | title }}</td>
+          <td>${{ p.precio}}</td>
+          <td>{{ p.descripcion }}</td>
+          <td>{{ p.stock }}</td>
+          <td>{{ p.marca.nom_marca }}</td>
+          {% if p.image_url %}
+          <td><img  class="img-fluid" src="{{ media }}{{ p.image_url }}" alt=""></td>
+          {% else%}
+          <td>Producto sin imagen</td>
+          {% endif %}
+          <td>{{ p.categoria.nom_categoria }}</td>
+          <td>
+            <div>
+              <a href="{% url 'modificar_producto' p.id %}" class="btn btn-info btn-sm text-white">Modificar</a>
+            </div>
+            <div>
+              <a href="#" onclick="eliminarProducto({{ p.id }})" class="btn btn-danger btn-sm text-white">Eliminar</a> 
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      {% include 'app/paginator.html' %}
+    </div>
+    <hr>
+    <div class="d-flex justify-content-end">
+      <a href="{% url 'agregar_producto' %}" class="btn btn-primary">Agregar nuevo producto</a>
+    </div>
+  </div>
+</div>
+<br><br><br>
+
+{% endblock %}

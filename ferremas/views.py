@@ -98,11 +98,13 @@ def agregar_detalles_entrega(request):
 def index(request):
     try:
         headers = {'Authorization': settings.API_TOKEN}
+        media = settings.MEDIA_URL
         response = requests.get(f'http://{settings.API_BASE_URL}/', headers=headers)
         response.raise_for_status()
         productos = response.json()
         data = {
             'productos': productos,
+            'media': media
         }
         return render(request, 'app/home.html', data)
     except requests.exceptions.RequestException as e:
@@ -112,11 +114,12 @@ def index(request):
 def detalle_producto(request, id):
     try:
         headers = {'Authorization': settings.API_TOKEN}
+        media = settings.MEDIA_URL
         response = requests.get(f'http://{settings.API_BASE_URL}/get-producto/{id}/', headers=headers)
 
         if response.status_code == 200:
             producto = response.json()
-            data = {'producto': producto}
+            data = {'producto': producto, 'media': media}
             return render(request, 'app/detalle-producto.html', data)
         else:
             messages.error(request, 'Error al obtener detalles del producto')

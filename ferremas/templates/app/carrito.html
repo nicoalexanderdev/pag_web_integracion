@@ -13,7 +13,7 @@
 <div class="row">
   {% for key, value in request.session.carrito.items %}
   <div class="col-6">
-    <img class="img-fluid w-100" src="{{ value.image_url }}" alt="imagen-producto">
+    <img class="img-fluid w-100" src="http://127.0.0.1:8000/{{ value.image_url }}" alt="imagen-producto">
   </div>
   <div class="col-6">
     <a href="{% url 'marca' value.marca_id %}" class="btn btn-default" style="font-size: 1rem;">

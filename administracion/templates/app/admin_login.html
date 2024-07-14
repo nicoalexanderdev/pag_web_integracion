@@ -1,0 +1,62 @@
+{% extends "app/base2.html" %}
+{% block title %}
+<title>Login Administrador</title>
+{% endblock %}
+
+{% block contenido %}
+<br><br><br>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h4>Inicio de Sesión Administrador</h4>
+        </div>
+        <div class="card-body">
+
+          <form id="formularioLogin" action="" method="post">
+        
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">
+                  <strong>Nombre de usuario</strong>
+                </label>
+                <span class="info-text"> (Este campo sólo acepta texto)</span>
+                <input class="form-control" type="text" name="username" autofocus="" autocapitalize="none"
+                  autocomplete="username" maxlength="150" required="" id="id_username">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <label for="exampleInputEmail1" class="form-label">
+                  <strong>Contraseña</strong>
+                </label>
+                <div class="input-group mb-3">
+                  <input class="form-control" type="password" name="password" autocomplete="current-password"
+                    required="" id="id_password">
+                  <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+        
+            <hr>
+        
+        
+        
+        
+            <div class="d-grid mt-3">
+              <input class="btn btn-success" type="submit" value="Iniciar Sesión" id="iniciar">
+            </div>       
+          </form>      
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<br><br><br>
+{% endblock %}
