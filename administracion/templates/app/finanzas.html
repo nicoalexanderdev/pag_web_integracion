@@ -1,0 +1,51 @@
+{% extends "app/base2.html" %}
+{% block title %}
+<title>Finanzas</title>
+{% endblock %}
+
+{% block contenido %}
+
+<br><br><br>
+<div class="container">
+  <div class="table-reponsive">
+    <table class="table table-sm">
+      <h2>Listado de transacciones realizadas</h2>
+      <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'export_to_excel' %}" class="btn btn-success">Descargar Excel</a>
+      </div>
+      <hr>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Orden de compra</th>
+          <th scope="col">Monto</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Usuario asociado</th>
+          <th scope="col">Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in entity %}
+        <tr>
+          <td>{{ p.id }}</td>
+          <td>{{ p.buy_order }}</td>
+          <td>${{ p.amount }}</td>
+          <td>{{ p.status }}</td>
+          <td>{{ p.user.first_name }} {{ p.user.last_name }}</td>
+          <td>{{ p.transaction_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div>
+      {% include 'app/paginator.html' %}
+    </div>
+    <hr>
+    <div>
+      <a href="{% url 'index' %}">Volver</a>
+    </div>
+  </div>
+</div>
+<br><br><br>
+
+{% endblock %}

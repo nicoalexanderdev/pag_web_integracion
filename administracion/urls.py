@@ -16,4 +16,6 @@ urlpatterns = [
     path('categorias/agregar', views.agregar_categoria, name='agregar_categoria'),
     path('categorias/modificar/<int:id>', views.modificar_categoria, name='modificar_categoria'),
     path('categorias/eliminar/<int:id>', views.eliminar_categoria, name='eliminar_categoria'),
+    path('finanzas', views.finanzas, name='finanzas'),
+    path('finanzas/export-to-excel', views.export_to_excel, name='export_to_excel'),
 ]

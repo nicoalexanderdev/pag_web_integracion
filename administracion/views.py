@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.conf import settings
 import requests
 from django.core.paginator import Paginator
+from openpyxl import Workbook
 
 
 def admin_login(request):
@@ -426,4 +427,70 @@ def eliminar_categoria(request, id):
             print('No se pudo obtener detalles del error en formato JSON')
         messages.error(request, 'Hubo un error al eliminar')
         return redirect('categorias')
+    
+
+@user_passes_test(lambda u: u.is_staff, login_url='admin_login')
+def finanzas(request):
+    headers = {'Authorization': settings.API_TOKEN}
+    page = request.GET.get('page', 1)
+
+    try:
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/transactions', headers=headers)
+        response.raise_for_status()
+        transactions = response.json()
+
+        try:
+            paginator = Paginator(transactions, 5)
+            transactions = paginator.page(page)
+        except:
+            raise Http404
+        
+        data = {
+            'entity': transactions,
+            'paginator': paginator,
+        }
+        return render(request, 'app/finanzas.html', data)
+    except:
+        messages.error(request, 'Error al obtener transacciones')
+        return redirect('index')
+
+
+@user_passes_test(lambda u: u.is_staff, login_url='admin_login')
+def export_to_excel(request):
+    headers = {'Authorization': settings.API_TOKEN}
+
+    try:
+        response = requests.get(f'http://{settings.API_BASE_TRANSBANK_URL}/transactions', headers=headers)
+        response.raise_for_status()
+        transactions = response.json()
+
+        # Crear un libro de trabajo y una hoja de trabajo
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Transacciones"
+
+        # Añadir encabezados de columna
+        ws.append(["ID", "Orden de compra", "Monto", "Estado", "Usuario asociado", "Fecha"])
+
+        # Añadir datos de transacciones
+        for transaction in transactions:
+            ws.append([
+                transaction.get('id'),
+                transaction.get('buy_order'),
+                transaction.get('amount'),
+                transaction.get('status'),
+                f"{transaction.get('user', {}).get('first_name', '')} {transaction.get('user', {}).get('last_name', '')}",
+                transaction.get('transaction_date')
+            ])
+
+        # Configurar la respuesta para descargar el archivo Excel
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=transacciones.xlsx'
+        wb.save(response)
+
+        return response
+    except:
+        messages.error(request, 'Error al generar el archivo Excel')
+        return redirect('finanzas')
+    
     
