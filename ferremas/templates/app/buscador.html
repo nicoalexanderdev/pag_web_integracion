@@ -19,14 +19,14 @@
 
         <div class="card mb-3 zoom-card">
 
-          <img src="{{ r.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
+          <img src="{{ media }}{{ r.image_url }}" class="card-img-top img-fluid" alt="imagen producto">
 
           <div class="card-body">
             <strong>{{ r.marca.nom_marca }}</strong>
             <p class="card-title">{{ r.nombre }}</p>
             <strong>${{ r.precio }}</strong>
             <div class="d-grid mt-3">
-              <a href="{% url 'agregar-carrito' r.id %}"  class="btn btn-success">
+              <a href="{% url 'agregar-carrito' r.id %}" class="btn btn-success">
                 Agregar al carro
                 <i class="bi bi-cart"></i>
               </a>
