@@ -78,10 +78,9 @@ TEMPLATES = [
 
 LOGIN_REDIRECT_URL = "/tienda/"
 LOGOUT_REDIRECT_URL = "/tienda/"
-API_BASE_URL ="127.0.0.1:8000/api/productos"
+API_BASE_URL = "127.0.0.1:8000/api/productos"
 API_BASE_TRANSBANK_URL = "127.0.0.1:8000/api/compras"
 TRANSBANK_RETURN_URL = "127.0.0.1:7000/tienda/transbank"
-GOOGLE_MAPS_API_KEY = 'AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc'
 
 # credenciales API integracion
 USERNAME = 'nico2'

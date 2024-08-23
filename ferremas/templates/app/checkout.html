@@ -60,17 +60,18 @@
             {% if sucursales %}
             <ul class="list-group">
               {% for s in sucursales %}
-              
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                  <div class="form-check">
+
+              <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="form-check">
                   <div class="ms-2 me-auto">
-                    <input class="form-check-input" type="radio" name="sucursal" id="radio-sucursal" value="{{ s.nom_sucursal }}">
+                    <input class="form-check-input" type="radio" name="sucursal" id="radio-sucursal"
+                      value="{{ s.nom_sucursal }}">
                     <div class="fw-bold">{{ s.nom_sucursal }}</div>
                     {{ s.direccion}}, {{ s.num_direccion }}, {{ s.comuna.nom_comuna }}
                   </div>
-                </div> 
-                </li>
-                          
+                </div>
+              </li>
+
               {% endfor %}
             </ul>
             {% else %}
@@ -102,9 +103,12 @@
             {% for d in direcciones %}
             <div class="alert alert-primary" role="alert">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="direcciones_usuario" data-id="{{ d.comuna.provincia.region.id }}" value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
+                <input class="form-check-input" type="radio" name="direcciones_usuario"
+                  data-id="{{ d.comuna.provincia.region.id }}"
+                  value="{{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}" id="direccion{{ d.id }}">
                 <label class="form-check-label" for="direccion{{ d.id }}">
-                  {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }}, {{d.comuna.provincia.region.nom_region }}
+                  {{ d.direccion }} {{ d.num_direccion}}, {{ d.comuna.nom_comuna }},
+                  {{d.comuna.provincia.region.nom_region }}
                 </label>
               </div>
             </div>
@@ -222,9 +226,9 @@
         <!-- Tarjeta de fecha de entrega -->
         <div class="card">
           <div class="card-body">
-              <i class="bi bi-calendar-date"></i>
-              <strong>Fecha de entrega</strong> 
-              <span id="fecha-entrega"> </span>
+            <i class="bi bi-calendar-date"></i>
+            <strong>Fecha de entrega</strong>
+            <span id="fecha-entrega"> </span>
           </div>
         </div>
         <br>
@@ -232,10 +236,11 @@
       <form id="detalle-entrega-form" method="post" action="{% url 'agregar_detalles_entrega' %}">
         {% csrf_token %}
         <input type="hidden" name="tipo_entrega" value="">
-        <input type="hidden" name="direccion" id="direccion-form" value="">  
+        <input type="hidden" name="direccion" id="direccion-form" value="">
         <input type="hidden" name="region_id" id="region-id" value="">
-        <button type="submit" class="btn btn-success btn-sm" id="continuar-pago" style="display: none;">Continuar al pago</button>
-      </form> 
+        <button type="submit" class="btn btn-success btn-sm" id="continuar-pago" style="display: none;">Continuar al
+          pago</button>
+      </form>
     </div>
 
     <!-- carrito -->
@@ -267,8 +272,7 @@
     inputDireccion.addEventListener('change', buscarDireccion);
   });
 </script>
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzAifZGBkzUH0CZ0GaDwOXROZYtNtc8Uc&libraries=places&callback=initMap"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"></script>
 <script src="{% static 'app/js/funcionesGoogleMaps.js' %}"></script>
 <!-- validaciones -->
 <script src="{% static 'app/js/gestionCheckout.js' %}"></script>
